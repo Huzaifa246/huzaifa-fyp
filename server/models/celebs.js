@@ -21,6 +21,9 @@ const celebritySchema = new mongoose.Schema({
     date: String,
     time: String,
     booked_slots: Number,
+    selected: { type: Boolean, default: false },
+    selectedTime: { type: Boolean, default: false },
+
   }]
   // total_cost : String,
   //   total_members : Number,

@@ -34,12 +34,10 @@ import ForgotPasswordCeleb from './Components/ForgotPasswordCeleb/index';
 import CelebLoginCopy from './Pages/CelebLoginCopy';
 
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
+import PersonalProfile from './Pages/PersonalProfile';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
-
-
-
   const [state, dispatch] = useReducer(reducer, initialState)
   const [currentId, setCurrentId] = useState(null)
   const [currentUser, setCurrentUser] = useState("")
@@ -53,9 +51,10 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/PersonalProfile" element={<PersonalProfile />} />
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
             <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
-            <Route path="/Stripe" element={<StripeContainer />} />
+            <Route path="/payment" element={<StripeContainer />} />
             <Route path="/fan-schedule" element={<Schedule />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/about-us" element={<AboutUs />} />

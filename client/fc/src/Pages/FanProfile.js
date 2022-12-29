@@ -1,59 +1,10 @@
-// import { Link } from "react-router-dom";
-import "./CSS/profile.css";
+import "./CSS/PersonalProfile.css";
 import React, { useEffect, useReducer, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Grid, Paper } from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { defaultpic } from "./imports";
 // --------------------
-
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  align: "center",
-  color: theme.palette.text.secondary,
-}));
-const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    minWidth: 350,
-    maxWidth: 500,
-    backgroundColor: theme.palette.background.paper,
-    align: "center",
-    justifyContent: "center",
-  },
-  chip: {
-    marginRight: theme.spacing.unit,
-  },
-  section1: {
-    margin: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`,
-  },
-  section2: {
-    margin: theme.spacing.unit * 1,
-  },
-  section3: {
-    margin: `${theme.spacing.unit * 6}px ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2
-      }px`,
-  },
-});
-
-
-
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -72,7 +23,7 @@ function Profile(props, setCurrentId) {
   const params = useParams();
   const { slug } = params;
 
-  const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
+  const [{ loading, error }, dispatch] = useReducer(reducer, {
     // celebs: [],
     loading: true,
     error: "",
@@ -87,9 +38,9 @@ function Profile(props, setCurrentId) {
 
       try {
         // get data of every individual fans by slug
-        const result = await axios.get(`api/fans/indiFans/${slug}`).then((resp) => {
-          setFans(resp.data.fans);
-          console.log(resp.data.fans);
+        const result = await axios.get(`http://localhost:5000/api/users/indi/${slug}`).then((resp) => {
+          setFans(resp.data.users);
+          console.log(resp.data.users);
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
@@ -104,58 +55,40 @@ function Profile(props, setCurrentId) {
 
   return (
     <>
-
-      <div style={{ maxWidth: "550px", margin: "0px auto" }}>
-        <div
-          style={{
-            margin: "18px 0px",
-            borderBottom: "1px solid grey",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-          >
-            <div>
-              <a href={fans.image}>
-                <LazyLoadImage
-                  style={{
-                    width: "160px",
-                    height: "160px",
-                    borderRadius: "80px",
-                  }}
-                  src={fans.image}
-                  alt=""
-                  visibleByDefault={defaultpic}
-                />
-              </a>
+      <br />
+      <div style={{ display: "flex", justifyContent: "space-around", }} >
+        <div className="container-width">
+          <div className="col-12 col-sm-12 col-md-12 col-lg-3">
+            <div className="our-team">
+              <div className="picture">
+                <a href={fans.image}>
+                  <LazyLoadImage
+                    style={{
+                      width: "160px",
+                      height: "160px",
+                      borderRadius: "80px",
+                    }}
+                    src={fans.image}
+                    alt=""
+                    visibleByDefault={defaultpic}
+                    // acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    // showPreviews={true}
+                    maxFileSize={1000000}
+                    filesLimit={1}
+                  />
+                </a>
+              </div>
               <Link to={`/profile/edit-profile/${fans.slug}`}>
-                <EditOutlinedIcon
-                  style={{ margin: 15 }}
-                  onClick={() => (setCurrentId = fans._id)}
-                  color="primary"
-                  variant="outlined"
-                >
-                  Edit
-                </EditOutlinedIcon>
+                <button className="pro" onClick={() => (setCurrentId = fans._id)}>EDIT</button>
               </Link>
-            </div>
-          </div>
-          <div style={{ marginTop: "30px" }}>
-            <h4>{fans.name}</h4>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "108%",
-              }}
-            >
-              <h6>
-
-                {fans.bio}
-              </h6>
+              <div className="team-content">
+                <h3 className="name">{fans.fullName}</h3>
+                <h4 className="title">{fans.email}</h4>
+                <h5 className="title">{fans.bio}</h5>
+              </div>
+              <ul className="social">
+                <li></li>
+              </ul>
             </div>
           </div>
         </div>

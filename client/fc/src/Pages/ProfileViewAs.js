@@ -1,8 +1,9 @@
 // import { Link } from "react-router-dom";
 import "./CSS/profile.css";
+
 import React, { useEffect, useReducer, useState } from "react";
 import { styled } from "@mui/material/styles";
-import { Grid, Paper, Box } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -11,11 +12,8 @@ import Avatar from "@material-ui/core/Avatar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import ShowProfile from "../Components/ShowProfile";
 import axios from "axios";
-import { BACKEND_URI } from "../config/constants";
 import { Link, useParams } from "react-router-dom";
-import { defaultpic } from './imports'
 // --------------------
 
 // const deleteFunction = async (id) => {
@@ -80,6 +78,11 @@ const reducer = (state, action) => {
 function Profile(props, setCurrentId) {
   const params = useParams();
   const { slug } = params;
+  const [selected, setSelected] = useState(false)
+  const [selectedTime, setSelectedTime] = useState(false)
+  const [id, setId] = useState("");
+  const [meet, setMeet] = useState("");
+
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
     // celebs: [],
@@ -95,9 +98,13 @@ function Profile(props, setCurrentId) {
 
       try {
         // get data of every individual celeb by slug
-        const result = await axios.get(`/api/celebs/indi/${slug}`).then((resp) => {
+        const result = await axios.get(`http://localhost:5000/api/celebs/indi/${slug}`).then((resp) => {
           setCeleb(resp.data.celebrities);
-          console.log(resp.data.celebrities);
+          console.log(resp.data.celebrities.meeting);
+          setId(resp.data.celebrities._id)
+          setMeet(resp.data.celebrities.meeting.meet)
+          // console.log(meet)
+          // console.log(id)
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
@@ -110,11 +117,25 @@ function Profile(props, setCurrentId) {
 
   }, [slug]);
   const meeting = celeb.meeting
-  meeting?.map((c) => (
-    console.log(c.date)
-  ))
+  // meeting?.map((c) => (
+  //   console.log(c.date)
+  // ))
+
   function AvailableDate() {
+    // useEffect(() => {
+    //   localStorage.setSelected('items selected', JSON.stringify(selected));
+    // }, [selected]);
     const sessions = meeting?.map((items) => {
+      function select_meeting() {
+        alert(items._id)
+        axios.put(`http://localhost:5000/api/celebs/${id}/meet/${items._id}`, {
+          selected: items.selected
+        });
+        // localStorage.setSelected('selected', selected);
+        console.log(items.selected)
+
+      }
+
       return (
         <>
           <Chip
@@ -123,10 +144,11 @@ function Profile(props, setCurrentId) {
             clickable
             // className={classes.chip}
             color="primary"
+            onClick={select_meeting}
             onDelete={handleDelete}
             deleteIcon={<DeleteIcon />}
             variant="outlined"
-            style={{ width: "%", marginLeft: "20px", marginTop: "10px" }}
+            style={{ width: "%", marginLeft: "20px", marginTop: "10px", backgroundColor: items.selected === true ? "green" : "" }}
           />
         </>
       );
@@ -136,6 +158,15 @@ function Profile(props, setCurrentId) {
   }
   function AvailableTime(props) {
     const sessions = meeting?.map((items) => {
+      function select_meetingTime() {
+        alert(items._id)
+        axios.put(`http://localhost:5000/api/celebs/${id}/meet/${items._id}`, {
+          selectedTime: items.selectedTime
+        });
+        // localStorage.setSelected('selected', selected);
+        console.log(items.selected)
+
+      }
       return (
         <>
           <Chip
@@ -169,27 +200,6 @@ function Profile(props, setCurrentId) {
   const handleChoose = (event) => {
     inputRef.current.click();
   };
-  // end video
-
-  const getAllMedias = () => {
-    axios
-      .get(`${BACKEND_URI}/api/media/all`)
-      .then((result) => {
-        dispatch({ type: "USER", payload: true })
-        // axios response always stores in data keyword
-        setMedias(result.data);
-      })
-      .catch((error) => {
-        setMedias([]);
-        console.log(error);
-        alert("Error occurred");
-      });
-  };
-
-  useEffect(() => {
-    getAllMedias();
-  }, []);
-
 
   return (
     <>
@@ -208,7 +218,7 @@ function Profile(props, setCurrentId) {
             }}
           >
             <div>
-              <a href={celeb.image || defaultpic}>
+              <a href={celeb.image}>
                 <img
                   style={{
                     width: "160px",
@@ -217,7 +227,6 @@ function Profile(props, setCurrentId) {
                   }}
                   src={celeb.image}
                   alt=""
-                  visibleByDefault={defaultpic}
                 />
               </a>
 
@@ -241,53 +250,46 @@ function Profile(props, setCurrentId) {
         </div>
       </div>
 
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={3}>
-          {/* Video Upload Grid Starts */}
-
-          <Grid item xs={8}>
-            <ShowProfile medias={medias} />
-          </Grid>
-          {/* Video Upload Grid Ends*/}
-
-          {/* Sessions Grid Starts */}
-          <Grid item xs={3.2} style={{ marginLeft: "43px" }}>
-            <Item>
-              <div className={classes.root}>
-                <div className={classes.section1}>
-                  <Grid container alignItems="center">
-                    <Grid item xs>
-                      <Typography gutterBottom variant="h6">
+      <div className="profile-div" style={{ align: "center", display: 'flex', justifyContent: "center", paddingTop: "40px" }} >
+        <Grid item xs={3} style={{ width: "100%", minWidth: "350px" }}>
+          <Item>
+            <div className={classes.root}>
+              <div className={classes.section1}>
+                <Grid container alignItems="center">
+                  <Grid item xs>
+                    <Typography gutterBottom variant="h6">
+                      {/* <Link to={`/profile/view-as/${slug}/Stripe`}>
                         Avalible Sessions
-                      </Typography>
-                    </Grid>
-                    <Grid item></Grid>
+                      </Link> */}
+                      Avalible Sessions
+                    </Typography>
                   </Grid>
+                  <Grid item></Grid>
+                </Grid>
 
-                  <AvailableDate />
-                </div>
-                <Divider variant="middle" />
-                <div className={classes.section2}>
-                  <Typography gutterBottom variant="h6">
-                    Avalible Time Slots
-                  </Typography>
-                  <div>
-                    <AvailableTime />
-                  </div>
-                </div>
-                <div className={classes.section3}>
-                  <Link to={`/profile/${celeb.slug}/add-session`}>
-                    <Button variant="contained" color="primary" fullWidth>
-                      Book Session
-                    </Button>
-                  </Link>
+
+                <AvailableDate />
+              </div>
+              <Divider variant="middle" />
+              <div className={classes.section2}>
+                <Typography gutterBottom variant="h6">
+                  Avalible Time Slots
+                </Typography>
+                <div>
+                  <AvailableTime />
                 </div>
               </div>
-            </Item>
-          </Grid>
-          {/* Sessions Grid End */}
+              <div className={classes.section3}>
+                <Link to={"/payment"}>
+                  <Button variant="contained" color="primary" fullWidth>
+                    Book Session
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Item>
         </Grid>
-      </Box>
+      </div>
     </>
   );
 }

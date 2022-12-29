@@ -29,7 +29,7 @@ export default function Navbar(props) {
     console.log(strWithOutQuotes)
     console.log("testin chalri hai")
     // if(state){
-      if(localStorage.getItem('email')){
+      if(localStorage.getItem('username')){
       
       return (
         <ul className="nav-menu" id="nav-menu" style={{ marginTop: "10px" }}>

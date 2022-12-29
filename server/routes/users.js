@@ -11,11 +11,11 @@ router.post("/", async (req, res) => {
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
 
-		let user = await User.findOne({ email: req.body.email });
+		let user = await User.findOne({ slug: req.body.slug, email: req.body.email });
 		if (user)
 			return res
 				.status(409)
-				.send({ message: "User with given email already Exist!" });
+				.send({ message: "User with given email or username already Exist!" });
 
 		const salt = await bcrypt.genSalt(Number(process.env.SALT));
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -57,5 +57,43 @@ router.get("/:id/verify/:token/", async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
+// GET INDIVIDUAL (by ID)
+router.get("/:id", (req, res) => {
+	User.findById(req.params.id)
+		.then((result) => {
+			res.status(200).json({
+				users: result,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({
+				error: err,
+			});
+		});
+});
+// GET ALL API route
+router.get("/", (req, res) => {
+	// Celebrity is the collection name of the mongoDB
+	User.find()
+		.then((result) => {
+			res.status(200).json({
+				users: result,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({
+				error: err,
+			});
+		});
+});
+router.get("/indi/:slug", (req, res) => {
+	User.findOne({ slug: req.params.slug }, (error, post) => {
+	  console.log(error, post);
+	  res.status(200).json({ users: post });
+	});
+  });
+
 
 module.exports = router;

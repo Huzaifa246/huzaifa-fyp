@@ -45,10 +45,11 @@ export default function Booking() {
       try {
         // get data of every individual celeb by slug
         const result = await axios
-          .get(`/api/celebs/indi/${slug}`)
+          .get(`http://localhost:5000/api/celebs/indi/${slug}`)
           .then((resp) => {
             setCeleb(resp.data.celebrities);
             setId(resp.data.celebrities._id);
+            console.log(celeb)
           });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });

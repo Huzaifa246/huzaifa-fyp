@@ -26,7 +26,7 @@ export default function Login({ props, currentUser, setCurrentUser }) {
       })
       .then((res) => {
 
-        if (res.data.celebrities.email === email && res.data.celebrities.password === password) {
+        if (res.data.celebrities.email === email) {
           dispatch({ type: "USER", payload: true });
           localStorage.setItem("userInfo", JSON.stringify(res.data.token));
           localStorage.setItem("username", JSON.stringify(slug));

@@ -125,8 +125,8 @@ import styles from "./CSS/fansup.css";
 
 const Signup = () => {
   const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
+    fullName: "",
+    slug: "",
     email: "",
     password: "",
   });
@@ -153,6 +153,7 @@ const Signup = () => {
       }
     }
   };
+
   return (
     <div className="Auth-form-container">
       <form onSubmit={handleSubmit} className="Auth-form">
@@ -168,19 +169,19 @@ const Signup = () => {
           <div className="form-group mt-3">
             <input
               type="text"
-              placeholder="First Name"
-              name="firstName"
+              placeholder="Full Name"
+              name="fullName"
               onChange={handleChange}
-              value={data.firstName}
+              value={data.fullName}
               required
               className="form-control mt-1"
             />
             <input
               type="text"
-              placeholder="Last Name"
-              name="lastName"
+              placeholder="slug"
+              name="slug"
               onChange={handleChange}
-              value={data.lastName}
+              value={data.slug}
               required
               className="form-control mt-1"
             />

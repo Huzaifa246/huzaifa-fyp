@@ -12,17 +12,17 @@ router.post("/", async (req, res) => {
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
 
-		const user = await User.findOne({ email: req.body.email });
+		const user = await User.findOne({ slug: req.body.slug, email: req.body.email });
 		if (!user)
-			return res.status(401).send({ message: "Invalid Email or Password" });
-
+			return res.status(401).send({ message: "Invalid Username or Email or Password" });
+		// password
 		const validPassword = await bcrypt.compare(
 			req.body.password,
 			user.password
 		);
 		if (!validPassword)
 			return res.status(401).send({ message: "Invalid Email or Password! Please try again" });
-
+		// token verification
 		if (!user.verified) {
 			let token = await Token.findOne({ userId: user._id });
 			if (!token) {
@@ -33,7 +33,6 @@ router.post("/", async (req, res) => {
 				const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
 				await sendEmail(user.email, "Verify Email", url);
 			}
-
 			return res
 				.status(400)
 				.send({ message: "Email sent to your account please verify(message from auth file)" });
@@ -48,6 +47,7 @@ router.post("/", async (req, res) => {
 
 const validate = (data) => {
 	const schema = Joi.object({
+		slug: Joi.string().slug().required().label("slug"),
 		email: Joi.string().email().required().label("Email"),
 		password: Joi.string().required().label("Password"),
 	});

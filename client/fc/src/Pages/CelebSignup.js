@@ -25,7 +25,7 @@ export default function Signup(props) {
   const PostData = async (e) => {
     e.preventDefault();
 
-    const { slug, email, password } = user;
+    const { name, slug, email, password } = user;
 
     let res = await fetch("http://localhost:5000/api/celebs/celeb-signup", {
       method: "POST",
@@ -33,6 +33,7 @@ export default function Signup(props) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        name,
         slug,
         email,
         password,

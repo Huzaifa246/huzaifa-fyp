@@ -4,21 +4,15 @@ const Celebrity = require("../models/celebs");
 const mongoose = require("mongoose");
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
-const cloudinary = require('cloudinary').v2;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-
-cloudinary.config({
-  cloud_name: 'dnpwjxrzf',
-  api_key: '657142361551677',
-  api_secret: 'y93bziHtKoKDnZRerMg09BX3C74'
-})
+const { cloudinary } = require('../utils/cloudinary');
 
 
 // CREATE CELEBRITY
-celebRouter.post("/ ", async (req, res) => {
-  const { name, slug, email, password, image, bio } = req.body;
+celebRouter.post("/celeb-signup", async (req, res) => {
+  // const { name, slug, email, password, image, bio } = req.body;
+  const { name, slug, email, password } = req.body;
   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   try {
@@ -33,8 +27,8 @@ celebRouter.post("/ ", async (req, res) => {
       slug,
       email,
       password: hashPassword,
-      image,
-      bio
+      // image,
+      // bio
     }).save();
 
     res.status(200).json({ success: true, message: "Signup Successfully", data: { payload } });
@@ -82,6 +76,72 @@ celebRouter.get("/", (req, res) => {
     });
 });
 
+// get meet id
+celebRouter.get("/:id/meet/:meetId", async (req, res) => {
+  const _id = req.params.id
+  const meetId = req.params.meetId
+  try {
+    const celeb = await Celebrity.findOne({ _id })
+    let meeting;
+    celeb.meeting.forEach((meet) => {
+      console.log("meet", meet)
+      if (meet._id.toString() === meetId) {
+        console.log("true")
+        meeting = meet
+      }
+    })
+    res.status(200).json({ success: true, message: "ok", data: meeting })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+
+  }
+})
+// update date and time using meet id
+celebRouter.put("/:id/meet/:meetId", async (req, res) => {
+  const _id = req.params.id
+  const meetId = req.params.meetId
+  try {
+    const celeb = await Celebrity.findOne({ _id })
+    let meeting;
+    celeb.meeting.forEach((meet) => {
+      console.log("meet", meet)
+      if (meet._id.toString() === meetId) {
+
+        if (meet.selected === false)
+          return meet.selected = true
+        else if (meet.selected !== false) return meet.selected = false
+
+        console.log("meeting", meet)
+      }
+    })
+
+    console.log("celeb", celeb)
+    await celeb.save();
+    res.status(200).json({ success: true, message: "ok", data: meeting })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+
+  }
+})
+// --------------------------------
+// delete meet id
+celebRouter.delete("/:id/meet/:meetId", async (req, res) => {
+  const _id = req.params.id
+  const meetId = req.params.meetId
+  try {
+    const celeb = await Celebrity.findOne({ _id })
+    let meeting = celeb.meeting.filter((meet) => { return meet._id.toString() !== meetId })
+    celeb.meeting = meeting
+    await celeb.save()
+    res.status(200).json({ success: true, message: "ok", data: celeb })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+
+  }
+})
 // GET INDIVIDUAL CELEBRITY (by ID)
 celebRouter.get("/:id", (req, res) => {
   Celebrity.findById(req.params.id)
@@ -98,46 +158,6 @@ celebRouter.get("/:id", (req, res) => {
     });
 });
 
-// celebRouter.post("/", (req, res) => {
-//   // Celebrity is the collection name of the mongoDB
-//   const celeb = new Celebrity({
-//     _id: new mongoose.Types.ObjectId(),
-//     name: req.body.name,
-//     slug: req.body.slug,
-//     email: req.body.email,
-//     password: req.body.password,
-//     category: req.body.category,
-//     bio: req.body.bio,
-//     image: req.body.image,
-//     reels: req.body.reels,
-//     // meeting: [{ 
-//     //   total_cost : req.body.total_cost,
-//     //   total_members : req.body.total_members,
-//     //   message: req.body.message,
-//     //   date: req.body.date,
-//     //   time: req.body.time,
-//     // }],
-//   });
-
-//   // saving the coming data in the database
-//   celeb
-//     .save()
-//     .then((result) => {
-//       console.log(result);
-//       res.status(200).json({
-//         celebrity: result,
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).json({
-//         error: err,
-//       });
-//     });
-// });
-
-
-
 // GET INDIVIDUAL CELEBRITY (by SLUG)
 celebRouter.get("/indi/:slug", (req, res) => {
   Celebrity.findOne({ slug: req.params.slug }, (error, post) => {
@@ -147,12 +167,12 @@ celebRouter.get("/indi/:slug", (req, res) => {
 });
 
 // UPDATE CELEBRITY IMAGE
-celebRouter.put("/image/:id", upload.single('image'), async (req, res) => {
-
-  console.log(req.file);
-  const filePath = `${req.file.destination}/${req.file.filename}`;
-
+celebRouter.put("/image/:id", upload.single("image"), async (req, res) => {
+  console.log("id", req.params.id)
+  const filePath = `${req.file.destination}${req.file.filename}`;
+  console.log("filepath", filePath)
   const upload = await cloudinary.uploader.upload(filePath);
+  console.log("Profiles", upload);
 
   Celebrity.findOneAndUpdate(
     { _id: req.params.id },
@@ -165,6 +185,8 @@ celebRouter.put("/image/:id", upload.single('image'), async (req, res) => {
     .then((result) => {
       res.status(200).json({
         updatedCeleb: result,
+        success: true,
+        message: "Profile updated"
       });
     })
     .catch((err) => {
@@ -176,7 +198,7 @@ celebRouter.put("/image/:id", upload.single('image'), async (req, res) => {
 });
 
 
-// UPDATE CELEBRITY 
+// UPDATE CELEBRITY INFO
 celebRouter.put("/:id", (req, res) => {
   Celebrity.findOneAndUpdate(
     { _id: req.params.id },
@@ -299,6 +321,8 @@ celebRouter.post('/celebpassword/', async (req, res) => {
 // });
 
 //  set new password
+
+
 celebRouter.post("/:id", async (req, res) => {
   try {
     const passwordSchema = Joi.object({

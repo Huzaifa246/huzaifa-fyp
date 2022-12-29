@@ -34,7 +34,7 @@ const TvIcons = React.memo(() => {
               {/* slider */}
 
               <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
+                <div className="card" style={{ marginLeft: "20px" }}>
                   <figure>
                     <LazyLoadImage
                       src={celeb.image}
@@ -224,20 +224,34 @@ const Youtubers = React.memo(() => {
 })
 
 
-const Search = React.memo((props) => {
+const Search = (props) => {
   const [data, setData] = useState([]);
 
   // return data.filter(data => {
   //   return data.toLowerCase()
   // })
 
+  const searchItems = (searchValue) => {
+    setData(searchValue)
+    data.filter((item) => {
+      return Object.values(item).join('').toLowerCase().includes(data.toLowerCase())
+    })
+  }
   useEffect(() => {
+    let response;
     const func = async () => {
-      await axios.get("http://localhost:5000/api/celebs").then((resp) => {
-        return setData(resp.data.celebrities);
-      });
-    };
-    func()
+      response = await axios.get("http://localhost:5000/api/celebs");
+      if (response.data) {
+
+        response = response.data.celebrities.filter(celeb => celeb.name.toLowerCase() === props.celeb.toLowerCase());
+        setData(response);
+        console.log(response);
+      }
+      else {
+        console.log("no data found.");
+      }
+    }
+    func();
   }, []);
 
   return (
@@ -245,47 +259,45 @@ const Search = React.memo((props) => {
       <div className="section-header" style={{ marginTop: "50px" }}>
         Found Results
       </div>
-      <Carousel>
+      {console.log(props.celeb)}
+      {data.map((celeb) => {
+        return (
+          <>
+            {/* slider */}
 
-        {data.filter((celeb) => celeb.name === props.celeb).map((celeb) => {
-          return (
-            <>
-              {/* slider */}
+            <Col style={{ paddingBottom: "10px" }}>
+              <div className="card" style={{ marginLeft: "50px" }}>
+                <figure>
+                  <LazyLoadImage
+                    src={celeb.image}
+                    alt="Hotel"
+                    style={{ width: "400px", height: "250px" }}
+                  />
+                </figure>
 
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
-
-                  <div className="card-body">
-                    {/* <h3 className="card-title">{celeb.name}</h3> */}
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
-                  </div>
+                <div className="card-body">
+                  {/* <h3 className="card-title">{celeb.name}</h3> */}
+                  <Link to={`/profile/view-as/${celeb.slug}`}>
+                    <h3 className="card-title">{celeb.name}</h3>
+                  </Link>
+                  <p className="card-text">{celeb.bio}</p>
                 </div>
-              </Col>
-              {/* slider end */}
-            </>
-          );
-        })}
-        {/* =============================================================================== */}
-
-      </Carousel>
+              </div>
+            </Col>
+            {/* slider end */}
+          </>
+        );
+      })}
+      {/* =============================================================================== */}
     </div>
   );
-})
+}
 
 export default function Dashboard() {
   // --- Search Bar
   const [inputText, setInputText] = useState("");
-  let inputHandler = (e) => {
+  const inputHandler = (e) => {
+    e.preventDefault();
     setInputText(e.target.value);
   };
   // -----------
@@ -304,9 +316,11 @@ export default function Dashboard() {
           variant="outlined"
           label="Search"
         />
+
+        {console.log(inputText)}
         {/* <List input={inputText} /> */}
       </div>
-      {inputText ? <Search celeb={inputText} /> : ""}
+      {inputText.length > 1 ? <Search celeb={inputText} /> : ""}
       <TvIcons />
       <FilmIcons />
       <Bloggers />

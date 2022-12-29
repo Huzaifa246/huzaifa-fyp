@@ -33,7 +33,6 @@ function EditProfile({ currentId, setCurrentId }) {
   const [id, setId] = useState("");
   // updatedCeleb Image
   const [updateImage, setUpdateImage] = useState("");
-  console.log("image", updateImage);
 
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
@@ -61,7 +60,7 @@ function EditProfile({ currentId, setCurrentId }) {
       try {
         // get data of every individual celeb by slug
         const result = await axios
-          .get(`/api/celebs/indi/${slug}`)
+          .get(`http://localhost:5000/api/celebs/indi/${slug}`)
           .then((resp) => {
             setCeleb(resp.data.celebrities);
             setName(resp.data.celebrities.name);
@@ -88,6 +87,7 @@ function EditProfile({ currentId, setCurrentId }) {
     let formData = new FormData();
     const items = { name, bio, image };
     formData.append('image', updateImage)
+    console.log("imageForm", formData.get('image'))
     // image: e.target.files,
     axios.put(`http://localhost:5000/api/celebs/${id}`, {
       name: name,
@@ -99,7 +99,7 @@ function EditProfile({ currentId, setCurrentId }) {
     },
       // multer for formData used for image
       { headers: { 'Content-type': 'multipart/form-data' } }).then((res) => {
-        console.log(res);
+        console.log("response", res);
         setImage(res.data.image);
       }).catch((error) => {
         console.error(error)
@@ -161,6 +161,8 @@ function EditProfile({ currentId, setCurrentId }) {
                 <img className="userUpdateImg" src={celeb.image} alt='' />
                 <input type="file" name="image"
                   onChange={(e) => {
+                    // console.log(updateImage)
+                    // console.log(e.target.files)
                     setUpdateImage(e.target.files[0])
                   }}
                 />

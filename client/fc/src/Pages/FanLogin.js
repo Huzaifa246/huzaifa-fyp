@@ -1,4 +1,4 @@
-// import React, { useContext, useState } from "react";
+// import React, { useContext, useState } from "react"; kahan gaye???
 // import "./CSS/Login.css";
 // import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
@@ -131,7 +131,7 @@ import styles from "./CSS/fanLogin.css";
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-
+  const [slug, setSlug] = useState("");
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
@@ -139,11 +139,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = "http://localhost:5000/api/auth";
-      const { data: res } = await axios.post(url, data);
+      // const url = `http://localhost:5000/api/auth/${id}`;
+      const url = `http://localhost:5000/api/users/indi/${slug}`;
+      const { data: res } = await axios.get(url, data);
       localStorage.setItem("token", res.data);
-      window.location = "/";
-      window.localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("username", JSON.stringify(slug));
+      console.log(res.data + "res.data hai ye");
+      window.location = `/FanProfile/${slug}`;
+      // window.localStorage.setItem("isLoggedIn", true);
     } catch (error) {
       if (
         error.response &&
@@ -168,8 +171,20 @@ const Login = () => {
           </span>
         </div>
         <div className="Auth-form-content">
-
-          {/* <h3 className="Auth-form-title">Sign In</h3> */}
+          <div className="form-group mt-3">
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="username"
+              name="slug"
+              onChange={(event) => {
+                setSlug(event.target.value);
+              }}
+              value={slug}
+              required
+              className="form-control mt-1"
+            />
+          </div>
           <div className="form-group mt-3">
             <label>Email address</label>
             <input
