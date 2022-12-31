@@ -13,6 +13,7 @@ import SignupUserMode from "./Pages/SignupUserMode";
 import LoginUserMode from "./Pages/LoginUserMode";
 import Profile from "./Pages/Profile";
 import EditProfile from "./Pages/EditProfile";
+import FanEditProfile from "./Pages/FanEditProfile";
 import Categories from "./Pages/Categories";
 import AboutUs from "./Pages/AboutUs";
 import Footer from "./Components/Footer.js";
@@ -35,6 +36,7 @@ import CelebLoginCopy from './Pages/CelebLoginCopy';
 
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
 import PersonalProfile from './Pages/PersonalProfile';
+import NewSlide from './Pages/NewSlide';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
@@ -51,6 +53,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/NewSlide" element={<NewSlide />} />
             <Route path="/PersonalProfile" element={<PersonalProfile />} />
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
             <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
@@ -71,7 +74,7 @@ function App() {
             <Route path="/profile/:slug" element={<Profile setCurrentId={setCurrentId} />} />
 
             <Route path="/FanProfile/:slug" element={<FanProfile setCurrentId={setCurrentId} />} />
-            <Route path="/FanProfile/edit-profile/:slug" element={<EditProfile currentId={currentId} setCurrentId={setCurrentId} />} />
+            <Route path="/FanProfile/edit-profile/:slug" element={<FanEditProfile currentId={currentId} setCurrentId={setCurrentId} />} />
 
             <Route path="/profile/view-as/:slug" element={<ProfileViewAs />} />
             <Route path="/profile/edit-profile/:slug" element={<EditProfile currentId={currentId} setCurrentId={setCurrentId} />} />

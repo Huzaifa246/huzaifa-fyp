@@ -3,7 +3,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { defaultpic } from "./imports";
+import { defaultpic, user4 } from "./imports";
 // --------------------
 
 const reducer = (state, action) => {
@@ -68,9 +68,8 @@ function Profile(props, setCurrentId) {
                       height: "160px",
                       borderRadius: "80px",
                     }}
-                    src={fans.image}
+                    src={fans.image || user4}
                     alt=""
-                    visibleByDefault={defaultpic}
                     // acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
                     // showPreviews={true}
                     maxFileSize={1000000}
@@ -78,7 +77,7 @@ function Profile(props, setCurrentId) {
                   />
                 </a>
               </div>
-              <Link to={`/profile/edit-profile/${fans.slug}`}>
+              <Link to={`/FanProfile/edit-profile/${fans.slug}`}>
                 <button className="pro" onClick={() => (setCurrentId = fans._id)}>EDIT</button>
               </Link>
               <div className="team-content">

@@ -9,15 +9,12 @@ export { default as about1 } from "../Components/images/about1.jpg";
 export { default as about2 } from "../Components/images/about2.jpg";
 export { default as about3 } from "../Components/images/about3.jpg";
 export { default as defaultpic } from "../Components/images/defaultpic.png";
+export { default as user4 } from "../Components/images/user4.png";
 export { default as styled } from 'styled-components';
 // -------------  ABOUT US ----------------
 
 // ------------- Bloggerscategories -----
 export { Card, CardContent, CardMedia, Typography } from "@mui/material";
-// export { default as CardContent } from "@mui/material/CardContent";
-// export { default as CardMedia } from "@mui/material/CardMedia";
-// export { default as Typography } from "@mui/material/Typography";
-
 
 //-------------Booking--------
 export { ToastContainer, toast } from "react-toastify";

@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { user4 } from "./imports";
 // --------------------
 
 
@@ -195,7 +196,7 @@ function Profile(props, setCurrentId) {
                     height: "160px",
                     borderRadius: "80px",
                   }}
-                  src={celeb.image}
+                  src={celeb.image || user4}
                   alt=""
                 />
               </a>

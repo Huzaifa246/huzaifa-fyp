@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function EditProfile({ currentId, setCurrentId }) {
+function FanEditProfile({ currentId, setCurrentId }) {
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -28,7 +28,6 @@ function EditProfile({ currentId, setCurrentId }) {
   const { slug } = params;
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [category, setCategory] = useState("");
   // save image
   const [image, setImage] = useState("");
   const [id, setId] = useState("");
@@ -61,14 +60,13 @@ function EditProfile({ currentId, setCurrentId }) {
       try {
         // get data of every individual celeb by slug
         const result = await axios
-          .get(`http://localhost:5000/api/celebs/indi/${slug}`)
+          .get(`http://localhost:5000/api/users/indi/${slug}`)
           .then((resp) => {
-            setCeleb(resp.data.celebrities);
-            setName(resp.data.celebrities.name);
-            setBio(resp.data.celebrities.bio);
-            setCategory(resp.data.celebrities.category);
-            setImage(resp.data.celebrities.image);
-            setId(resp.data.celebrities._id);
+            setCeleb(resp.data.users);
+            setName(resp.data.users.name);
+            setBio(resp.data.users.bio);
+            setImage(resp.data.users.image);
+            setId(resp.data.users._id);
 
           });
 
@@ -88,17 +86,16 @@ function EditProfile({ currentId, setCurrentId }) {
   const updateUser = async (e) => {
     // formData for image
     let formData = new FormData();
-    const items = { name, bio, category, image };
+    const items = { name, bio, image };
     formData.append('image', updateImage)
     console.log("imageForm", formData.get('image'))
     // image: e.target.files,
-    axios.put(`http://localhost:5000/api/celebs/${id}`, {
+    axios.put(`http://localhost:5000/api/users/${id}`, {
       name: name,
       bio: bio,
-      category: category
     });
     // image only
-    axios.put(`http://localhost:5000/api/celebs/image/${id}`, {
+    axios.put(`http://localhost:5000/api/users/image/${id}`, {
       image: updateImage,
     },
       // multer for formData used for image
@@ -159,20 +156,6 @@ function EditProfile({ currentId, setCurrentId }) {
                 />
                 {bio}
               </div>
-              <div className="userUpdateItem">
-                <label style={{ color: "black" }}>Category</label>
-                <input
-                  type="text"
-                  size="50"
-                  placeholder={celeb.category}
-                  className="userUpdateInput"
-                  value={category}
-                  onChange={(e) => {
-                    setCategory(e.target.value);
-                  }}
-                />
-                {category}
-              </div>
             </div>
             <div className="userUpdateRight">
               <div className="userUpdateUpload">
@@ -217,4 +200,4 @@ function EditProfile({ currentId, setCurrentId }) {
   );
 }
 
-export default EditProfile;
+export default FanEditProfile;

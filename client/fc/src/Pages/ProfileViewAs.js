@@ -14,6 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { defaultpic, user4 } from "./imports";
 // --------------------
 
 // const deleteFunction = async (id) => {
@@ -78,11 +79,9 @@ const reducer = (state, action) => {
 function Profile(props, setCurrentId) {
   const params = useParams();
   const { slug } = params;
-  const [selected, setSelected] = useState(false)
-  const [selectedTime, setSelectedTime] = useState(false)
   const [id, setId] = useState("");
   const [meet, setMeet] = useState("");
-
+  const [changeColor, setChangeColor] = useState("");
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
     // celebs: [],
@@ -129,27 +128,33 @@ function Profile(props, setCurrentId) {
       function select_meeting() {
         alert(items._id)
         axios.put(`http://localhost:5000/api/celebs/${id}/meet/${items._id}`, {
-          selected: items.selected
+          // const dateArr []
+          // date: dateArr.push(capsule.value)
+          date: items.date
         });
-        // localStorage.setSelected('selected', selected);
-        console.log(items.selected)
-
+        setChangeColor(!changeColor)
+        console.log(items.date)
       }
 
+      console.log(items.date)
       return (
+
         <>
-          <Chip
-            avatar={<Avatar>D</Avatar>}
-            label={items.date}
-            clickable
-            // className={classes.chip}
-            color="primary"
-            onClick={select_meeting}
-            onDelete={handleDelete}
-            deleteIcon={<DeleteIcon />}
-            variant="outlined"
-            style={{ width: "%", marginLeft: "20px", marginTop: "10px", backgroundColor: items.selected === true ? "green" : "" }}
-          />
+          {items.time !== "" ?
+            < Chip
+              avatar={<Avatar>D</Avatar>}
+              label={items.date}
+              clickable
+              // className={classes.chip}
+              color="primary"
+              onClick={select_meeting}
+              onDelete={handleDelete}
+              deleteIcon={<DeleteIcon />}
+              variant="outlined"
+              style={{ width: "%", marginLeft: "20px", marginTop: "10px", backgroundColor: items.date === true ? "lightblue" : "" }}
+            />
+            : ""}
+
         </>
       );
     });
@@ -163,22 +168,24 @@ function Profile(props, setCurrentId) {
         axios.put(`http://localhost:5000/api/celebs/${id}/meet/${items._id}`, {
           selectedTime: items.selectedTime
         });
-        // localStorage.setSelected('selected', selected);
-        console.log(items.selected)
-
+        console.log(items.selectedTime)
       }
       return (
         <>
-          <Chip
-            avatar={<Avatar>T</Avatar>}
-            label={items.time}
-            clickable
-            color="primary"
-            onDelete={handleDelete}
-            deleteIcon={<DeleteIcon />}
-            variant="outlined"
-            style={{ width: "40%", marginLeft: "20px", marginTop: "10px" }}
-          />
+          {items.time !== "" ?
+            <Chip
+              avatar={<Avatar>T</Avatar>}
+              label={items.time}
+              clickable
+              // className={classes.chip}
+              color="primary"
+              onClick={select_meetingTime}
+              onDelete={handleDelete}
+              deleteIcon={<DeleteIcon />}
+              variant="outlined"
+              style={{ width: "%", marginLeft: "20px", marginTop: "10px", backgroundColor: items.selectedTime === true ? "lightblue" : "" }}
+            />
+            : ""}
         </>
       );
     });
@@ -225,7 +232,7 @@ function Profile(props, setCurrentId) {
                     height: "160px",
                     borderRadius: "80px",
                   }}
-                  src={celeb.image}
+                  src={celeb.image || user4}
                   alt=""
                 />
               </a>

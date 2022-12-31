@@ -1,90 +1,121 @@
-// import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
+import { Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./CSS/Dashboard.css";
+// import '../Pages/CSS/newSlide.css'
 
-// import { Swiper, SwiperSlide } from 'swiper/react';
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style, display: "block", background: "red" }}
+            onClick={onClick}
+        />
+    );
+}
 
-// // Import Swiper styles
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
-// import 'swiper/css/scrollbar';
+function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style, display: "block", background: "green" }}
+            onClick={onClick}
+        />
+    );
+}
+function NewSlide(props) {
+    const settings = {
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        speed: 2000,
+        // autoplaySpeed: 2000,
+        // cssEase: "linear",
+        slidesPerRow: 4,
+        fade: true,
+        lazyLoad: true,
+        col: 4,
+        adaptiveHeight: true,
+        arrows: true,
+        dotsClass: 'slick-dots',
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 2,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const func = async () => {
+            await axios.get("http://localhost:5000/api/celebs").then((resp) => {
+                return setData(resp.data.celebrities);
+            });
+        };
+        func()
+    }, []);
+    return (
+        <>
+            <div className="section-header" style={{ marginTop: "50px" }}>
+                TV Icons
+            </div>
+            <Slider {...settings}>
 
-// const youtubersData = [
-//     {
-//         name: "Junaid Akram",
-//         slug: "junaid-akram",
-//         email: "junaid@gmail.com",
-//         password: "junaid123",
-//         category: "youtuber",
-//         bio: "Youtuber, Blogger, Podcasts Host discuss Culture and Current Affairs",
-//         image: "https://hamariweb.com/profiles/images/profile/4347-679.jpg",
-//         reels: "",
-//     },
-//     {
-//         name: "Umer Khan",
-//         slug: "umer-khan",
-//         email: "umer@gmail.com",
-//         password: "umer123",
-//         category: "youtuber",
-//         bio: "Pakistani YouTuber, Vlogger, Photographer and Traveler",
-//         image:
-//             "https://1.bp.blogspot.com/-qhxsmeZpsNk/YAHF_iqFGhI/AAAAAAAABkg/dJOHnSX10i0FDSLcuEv21pVJS9pkv2NmgCLcBGAsYHQ/s577/ukhano.png",
-//         reels: "",
-//     },
-//     {
-//         name: "Saad ur Rehman",
-//         slug: "saad-ur-rehman",
-//         email: "saad@gmail.com",
-//         password: "saad123",
-//         category: "youtuber",
-//         bio: "Pakistani YouTuber, Gamer, and Roaster. Famous as Ducky bhai",
-//         image:
-//             "https://pakistantime.net/wp-content/uploads/2021/05/Couple-Of-The-Year-Looks-Like-Ducky-Bhai-Sham.jpg",
-//         reels: "",
-//     },
-//     {
-//         name: "Taimoor Salahuddin",
-//         slug: "taimoor-salahuddin",
-//         email: "taimoor@gmail.com",
-//         password: "taimoor123",
-//         category: "youtuber",
-//         bio: "YouTuber, Influencer, Filmmaker , Actor, Comedian and Musician",
-//         image:
-//             "https://pakistani.pk/uploads/reviews/photos/thumbnail/1500x500s/9c/72/36/Taimoor-Salahuddin-Complete-Information-53-1599593719.jpg",
-//         reels: "",
-//     },
-//     {
-//         name: "Shahveer Jafry",
-//         slug: "shahveer-jafry",
-//         email: "shahveer@gmail.com",
-//         password: "shahveer123",
-//         category: "youtuber",
-//         bio: "Pakistani Youtuber, Blogger and Sketch-Comedy artist",
-//         image:
-//             "https://1.bp.blogspot.com/-gRtDv6fznk8/XooCwWdKA0I/AAAAAAAACgI/IlP-EtIWwLslpm2-6g0w18JDFJkv2nAZgCLcBGAsYHQ/s1600/1623926536934406-c5-1080x1080.jpg",
-//         reels: "",
-//     },
-// ];
-// function NewSlide() {
+                {data.filter((celeb) => celeb.category === "youtuber").map((celeb) =>
+                    <Col style={{ paddingBottom: "10px" }}>
+                        <div className="card" style={{ marginLeft: "30px" }}>
+                            <figure>
+                                <LazyLoadImage
+                                    src={celeb.image}
+                                    alt="celebrity"
+                                    style={{ maxWidth: "350px", height: "250px" }}
+                                />
+                            </figure>
 
-//     return (
-//         <Swiper
-//             // install Swiper modules
-//             modules={[Navigation, Pagination, Scrollbar, A11y]}
-//             spaceBetween={50}
-//             slidesPerView={3}
-//             navigation
-//             pagination={{ clickable: true }}
-//             scrollbar={{ draggable: true }}
-//             onSwiper={(swiper) => console.log(swiper)}
-//             onSlideChange={() => console.log('slide change')}
-//         >
-//             <SwiperSlide>Slide 1</SwiperSlide>
-//             <SwiperSlide>Slide 2</SwiperSlide>
-//             <SwiperSlide>Slide 3</SwiperSlide>
-//             <SwiperSlide>Slide 4</SwiperSlide>
-//             ...
-//         </Swiper>
-//     )
-// }
+                            <div className="card-body">
+                                {/* <h3 className="card-title">{celeb.name}</h3> */}
+                                <Link to={`/profile/view-as/${celeb.slug}`}>
+                                    <h3 className="card-title">{celeb.name}</h3>
+                                </Link>
+                                <p className="card-text">{celeb.bio}</p>
+                            </div>
+                        </div>
+                    </Col>
+                )}
 
-// export default NewSlide
+            </Slider>
+        </>
+    )
+}
+
+export default NewSlide

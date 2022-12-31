@@ -17,7 +17,7 @@ celebRouter.post("/celeb-signup", async (req, res) => {
 
   try {
     if (!name || !slug || !email || !password) return res.status(400).json({ success: false, message: "Please fill out the form" });
-    if (!email.match(regexEmail)) return res.status(400).json({ success: false, message: "Invalid Email" });
+    if (!email.match(regexEmail)) return res.status(400).json({ success: false, message: "Invalid Email try another" });
 
     const celeb = await Celebrity.findOne({ email });
     if (celeb) return res.status(200).json({ success: false, message: "Celebrity already exists" });
@@ -75,7 +75,7 @@ celebRouter.get("/", (req, res) => {
       });
     });
 });
-
+//-----------------MEET --------------------------------
 // get meet id
 celebRouter.get("/:id/meet/:meetId", async (req, res) => {
   const _id = req.params.id
@@ -108,9 +108,17 @@ celebRouter.put("/:id/meet/:meetId", async (req, res) => {
       console.log("meet", meet)
       if (meet._id.toString() === meetId) {
 
-        if (meet.selected === false)
-          return meet.selected = true
-        else if (meet.selected !== false) return meet.selected = false
+        if (meet.selected === false)// && meet.selectedTime === false)
+          return (meet.selected = true) && (meet.selectedTime = true);
+
+        else if (meet.selected !== false)// && meet.selectedTime === true)
+          return (meet.selectedTime = false) && (meet.selected = false);
+
+
+
+        //  if (meet.selected === false)
+
+        // else if (meet.selected !== false) return meet.selected = false
 
         console.log("meeting", meet)
       }
@@ -125,7 +133,6 @@ celebRouter.put("/:id/meet/:meetId", async (req, res) => {
 
   }
 })
-// --------------------------------
 // delete meet id
 celebRouter.delete("/:id/meet/:meetId", async (req, res) => {
   const _id = req.params.id
@@ -142,6 +149,7 @@ celebRouter.delete("/:id/meet/:meetId", async (req, res) => {
 
   }
 })
+// --------------------------------Meet ENDS------------------------
 // GET INDIVIDUAL CELEBRITY (by ID)
 celebRouter.get("/:id", (req, res) => {
   Celebrity.findById(req.params.id)

@@ -18,12 +18,11 @@ export default function Login({ props, currentUser, setCurrentUser }) {
 
   const celebLogin = async (e) => {
     e.preventDefault();
-    await axios
-      .get(`http://localhost:5000/api/celebs/indi/${slug}`, {
-        slug: slug,
-        email: email,
-        password: password,
-      })
+    await axios.get(`http://localhost:5000/api/celebs/indi/${slug}`, {
+      slug: slug,
+      email: email,
+      password: password,
+    })
       .then((res) => {
 
         if (res.data.celebrities.email === email) {

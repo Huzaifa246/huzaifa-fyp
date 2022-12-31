@@ -4,6 +4,9 @@ const Token = require("../models/token");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
+const { cloudinary } = require('../utils/cloudinary');
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 router.post("/", async (req, res) => {
 	try {
@@ -90,10 +93,67 @@ router.get("/", (req, res) => {
 });
 router.get("/indi/:slug", (req, res) => {
 	User.findOne({ slug: req.params.slug }, (error, post) => {
-	  console.log(error, post);
-	  res.status(200).json({ users: post });
+		console.log(error, post);
+		res.status(200).json({ users: post });
 	});
-  });
+});
+
+router.put("/image/:id", upload.single("image"), async (req, res) => {
+	console.log("id", req.params.id)
+	const filePath = `${req.file.destination}${req.file.filename}`;
+	console.log("filepath", filePath)
+	const upload = await cloudinary.uploader.upload(filePath);
+	console.log("Profiles", upload);
+
+	User.findOneAndUpdate(
+		{ _id: req.params.id },
+		{
+			$set: {
+				image: upload.url,
+			},
+		}
+	)
+		.then((result) => {
+			res.status(200).json({
+				updatedFans: result,
+				success: true,
+				message: "Profile updated"
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({
+				error: err,
+			});
+		});
+});
+
+// UPDATE Fan INFO
+router.put("/:id", (req, res) => {
+	User.findOneAndUpdate(
+		{ _id: req.params.id },
+		{
+			$set: {
+				name: req.body.name,
+				slug: req.body.slug,
+				email: req.body.email,
+				password: req.body.password,
+				bio: req.body.bio,
+			}
+		}
+	)
+		.then((result) => {
+			res.status(200).json({
+				updatedFans: result,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({
+				error: err,
+			});
+		});
+});
 
 
 module.exports = router;
