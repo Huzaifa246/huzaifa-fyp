@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./CSS/Dashboard.css";
 import Categories from "../Components/Dashboard-Slider";
 import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
-import axios from "axios";
-import { TextField } from "@mui/material";
+// import axios from "axios";
+// import { TextField } from "@mui/material";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import Carousel from "carousel-react-rcdev";
-import styled from "styled-components"
+// import styled from "styled-components"
 
-const DashContainer = styled.div
-  ` display: flex;
-flex-flow: row wrap;
-`
+// const DashContainer = styled.div
+//   ` display: flex;
+// flex-flow: row wrap;
+// `
 const allCelebs = [
   {
     id: "1",
@@ -382,6 +382,15 @@ const allCelebs = [
 ];
 
 const TvIcons = () => {
+  // const [data, setData] = useState([]);
+  // useEffect(() => {
+  //   const func = async () => {
+  //     await axios.get("http://localhost:5000/api/celebs").then((resp) => {
+  //       return setData(resp.data.celebrities);
+  //     });
+  //   };
+  //   func()
+  // }, []);
 
   return (
     <>
@@ -390,7 +399,6 @@ const TvIcons = () => {
       </div>
       <Carousel>
         {allCelebs.filter((celeb) => celeb.category === "tv").map((celeb) => {
-          {/* {youtubersData.map((celeb) => { */ }
           return (
             <>
               {/* slider */}
@@ -433,7 +441,7 @@ const FilmIcons = () => {
       </div>
       <Carousel>
         {allCelebs.filter((celeb) => celeb.category === "film").map((celeb) => {
-          {/* {youtubersData.map((celeb) => { */ }
+
           return (
             <>
               {/* slider */}
@@ -476,7 +484,7 @@ const Bloggers = () => {
       </div>
       <Carousel>
         {allCelebs.filter((celeb) => celeb.category === "blogger").map((celeb) => {
-          {/* {youtubersData.map((celeb) => { */ }
+
           return (
             <>
               {/* slider */}
@@ -519,7 +527,7 @@ const Youtubers = () => {
       </div>
       <Carousel>
         {allCelebs.filter((celeb) => celeb.category === "youtuber").map((celeb) => {
-          {/* {youtubersData.map((celeb) => { */ }
+
           return (
             <>
               {/* slider */}
@@ -614,10 +622,10 @@ const Youtubers = () => {
 
 export default function Dashboard() {
   // --- Search Bar
-  const [inputText, setInputText] = useState("");
-  let inputHandler = (e) => {
-    setInputText(e.target.value);
-  };
+  // const [inputText, setInputText] = useState("");
+  // let inputHandler = (e) => {
+  //   setInputText(e.target.value);
+  // };
   // -----------
 
   return (
