@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./CSS/Dashboard.css";
 import Categories from "../Components/Dashboard-Slider";
 import { Link } from "react-router-dom";
