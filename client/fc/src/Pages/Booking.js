@@ -177,6 +177,8 @@ export default function Booking() {
                         <input
                           className="form-control"
                           type="datetime-local"
+                          // min="2022-06-14 Time 00:00" max="2030-01-01Time00:00"
+                          // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}Time[0-9]{2}:[0-9]{2}"
                           required
                           name="date and time"
                           value={dtPicker}

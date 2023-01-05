@@ -4,7 +4,7 @@ import {
   useClient,
   useMicrophoneAndCameraTracks,
   channelName,
-} from "./settings.js";
+} from "./settings";
 import { Grid } from "@material-ui/core";
 import Video from "./Video";
 import Controls from "./Controls";

@@ -30,7 +30,8 @@ export default function Video(props) {
                 />
               </Grid>
             );
-          } else return null;
+          }
+          else return null;
         })}
     </Grid>
   );

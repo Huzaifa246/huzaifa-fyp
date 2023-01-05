@@ -14,6 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import Stack from '@mui/material/Stack';
 import { defaultpic, user4 } from "./imports";
 // --------------------
 
@@ -45,9 +46,9 @@ const styles = (theme) => ({
   chip: {
     marginRight: theme.spacing.unit,
   },
-  section1: {
-    margin: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`,
-  },
+  // section1: {
+  //   margin: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`,
+  // },
   section2: {
     margin: theme.spacing.unit * 1,
   },
@@ -81,7 +82,7 @@ function Profile(props, setCurrentId) {
   const { slug } = params;
   const [id, setId] = useState("");
   const [meet, setMeet] = useState("");
-  const [changeColor, setChangeColor] = useState("");
+  // const [changeColor, setChangeColor] = useState("");
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
     // celebs: [],
@@ -121,9 +122,6 @@ function Profile(props, setCurrentId) {
   // ))
 
   function AvailableDate() {
-    // useEffect(() => {
-    //   localStorage.setSelected('items selected', JSON.stringify(selected));
-    // }, [selected]);
     const sessions = meeting?.map((items) => {
       function select_meeting() {
         alert(items._id)
@@ -132,8 +130,8 @@ function Profile(props, setCurrentId) {
           // date: dateArr.push(capsule.value)
           date: items.date
         });
-        setChangeColor(!changeColor)
-        console.log(items.date)
+        // setChangeColor(!changeColor)
+        // console.log(items.date)
       }
 
       console.log(items.date)
@@ -141,18 +139,20 @@ function Profile(props, setCurrentId) {
 
         <>
           {items.time !== "" ?
-            < Chip
-              avatar={<Avatar>D</Avatar>}
-              label={items.date}
-              clickable
-              // className={classes.chip}
-              color="primary"
-              onClick={select_meeting}
-              onDelete={handleDelete}
-              deleteIcon={<DeleteIcon />}
-              variant="outlined"
-              style={{ width: "%", marginLeft: "20px", marginTop: "10px", backgroundColor: items.date === true ? "lightblue" : "" }}
-            />
+            <Stack direction="row" spacing={1}>
+              <Chip
+                size="medium"
+                avatar={<Avatar>D</Avatar>}
+                label={items.date}
+                clickable
+                color="secondary"
+                onClick={select_meeting}
+                onDelete={handleDelete}
+                deleteIcon={<DeleteIcon variant="outlined" color="red" />}
+                variant="outlined"
+                style={{ width: "100%", padding: "20px", marginTop: "10px", backgroundColor: items.date === true ? "lightblue" : "" }}
+              />
+            </Stack>
             : ""}
 
         </>
@@ -196,7 +196,12 @@ function Profile(props, setCurrentId) {
   // video
   const inputRef = React.useRef();
   const [source, setSource] = useState();
-  const [medias, setMedias] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  // This function is called when the button is clicked the first time
+  const handleClick = () => {
+    setIsDisabled(true);
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -296,6 +301,16 @@ function Profile(props, setCurrentId) {
             </div>
           </Item>
         </Grid>
+      </div>
+      <div style={styles.container}>
+        <button
+          disabled={isDisabled}
+          onClick={handleClick}
+          // this is the style for the button
+          style={isDisabled ? styles.buttonDisabled : styles.button}
+        >
+          Button
+        </button>
       </div>
     </>
   );
