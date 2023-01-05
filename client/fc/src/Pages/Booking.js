@@ -27,8 +27,8 @@ export default function Booking() {
   const [total_cost, setTotal_Cost] = useState("");
   const [total_members, setTotal_Members] = useState("");
   const [message, setMessage] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [dtPicker, setDTPicker] = useState("");
+
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
     // celebs: [],
@@ -66,8 +66,8 @@ export default function Booking() {
     total_cost: total_cost,
     total_members: total_members,
     message: message,
-    date: date,
-    time: time,
+    date: dtPicker,
+    // time: time,
   };
 
 
@@ -172,23 +172,23 @@ export default function Booking() {
                     />
                   </div>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
                         <input
                           className="form-control"
-                          type="date"
+                          type="datetime-local"
                           required
-                          name="date"
-                          value={date}
+                          name="date and time"
+                          value={dtPicker}
                           onChange={(event) => {
-                            setDate(event.target.value);
+                            setDTPicker(event.target.value);
                           }}
                         />
                       </div>
                     </div>
                     {/* time */}
 
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <div className="form-group">
                         <input
                           className="form-control"
@@ -202,7 +202,7 @@ export default function Booking() {
                         />
                         <span className="form-label">Time</span>
                       </div>
-                    </div>
+                    </div> */}
                     {/* time end */}
                   </div>
                   <div className="form-btn">

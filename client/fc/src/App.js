@@ -1,4 +1,5 @@
 import "./App.css";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./Pages/Dashboard";
@@ -7,7 +8,6 @@ import CelebLogin from "./Pages/CelebLogin";
 import Navbar from "./Components/Navbar";
 import CelebSignup from "./Pages/CelebSignup";
 import Signup from "./Pages/FanSignup";
-
 import Schedule from "./Pages/Schedule";
 import SignupUserMode from "./Pages/SignupUserMode";
 import LoginUserMode from "./Pages/LoginUserMode";
@@ -33,13 +33,14 @@ import StripeContainer from "./Components/StripeContainer";
 import FanProfile from './Pages/FanProfile';
 import ForgotPasswordCeleb from './Components/ForgotPasswordCeleb/index';
 import CelebLoginCopy from './Pages/CelebLoginCopy';
-
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
-import PersonalProfile from './Pages/PersonalProfile';
 import NewSlide from './Pages/NewSlide';
+
+import Meet from './Components/Meeting/Meet';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
+
   const [state, dispatch] = useReducer(reducer, initialState)
   const [currentId, setCurrentId] = useState(null)
   const [currentUser, setCurrentUser] = useState("")
@@ -54,7 +55,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/NewSlide" element={<NewSlide />} />
-            <Route path="/PersonalProfile" element={<PersonalProfile />} />
+
+            <Route path="/Meet" element={<Meet />} />
+
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
             <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
             <Route path="/payment" element={<StripeContainer />} />

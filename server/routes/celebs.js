@@ -179,6 +179,7 @@ celebRouter.put("/image/:id", upload.single("image"), async (req, res) => {
   console.log("id", req.params.id)
   const filePath = `${req.file.destination}${req.file.filename}`;
   console.log("filepath", filePath)
+  console.log(req.file);
   const upload = await cloudinary.uploader.upload(filePath);
   console.log("Profiles", upload);
 

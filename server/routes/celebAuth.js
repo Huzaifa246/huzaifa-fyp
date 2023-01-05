@@ -6,7 +6,6 @@ const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 
-//post
 router.post("/", async (req, res) => {
     try {
         const { error } = validate(req.body);
