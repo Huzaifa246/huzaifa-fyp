@@ -37,9 +37,11 @@ import CelebSignupcopy from "./Pages/CelebSignupcopy";
 import NewSlide from './Pages/NewSlide';
 
 import Meet from './Components/Meeting/Meet';
+import Demo from './Pages/Demo';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
+
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const [currentId, setCurrentId] = useState(null)
@@ -55,7 +57,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/NewSlide" element={<NewSlide />} />
-
+            <Route path="/Demo" element={<Demo />} />
             <Route path="/Meet" element={<Meet />} />
 
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
