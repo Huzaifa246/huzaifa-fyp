@@ -4,50 +4,52 @@ import AppStore from "./images/app-store.png";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+
 export default function Footer() {
   return (
-    <footer class="section" style={{ color: "white" , height:"300px"}}>
-      <div class="container">
-        <div class="row">
-          <div class="col-4 col-md-6 col-sm-12">
-            <div class="content">
-              <a href="#" class="logo">
-                <i class="bx bx-movie-play bx-tada main-color"></i>Fan
-                <span class="main-color">C</span>lub
-              </a>
+    <footer className="section" style={{ color: "white", height: "auto" }}>
+      <div className="container">
+        <div className="row">
+          <div className="col-4 col-md-6 col-sm-12">
+            <div className="content">
+              <div>
+                <i className="bx bx-movie-play bx-tada main-color"></i>Fan
+                <span className="main-color">C</span>lub
+                {/* <img src={logo} alt="" style={{ maxHeight: "80px", maxWidth: "80px" }} /> */}
+              </div>
               <p>
                 FanClub is a platform that connects celebrities to their fans
                 through the website. FanClub allows fans to pay
                 their favorite celebrities for a one-to-one virtual conversation to experience
                 a new exposure of their lives.
               </p>
-              <div class="social-list">
-                <a href="#" class="social-item">
-                  <i class="bx bxl-facebook">
+              <div className="social-list">
+                <a href="#" className="social-item">
+                  <i className="bx bxl-facebook">
                     <FacebookIcon />
                   </i>
                 </a>
-                <a href="#" class="social-item">
-                  <i class="bx bxl-twitter">
+                <a href="#" className="social-item">
+                  <i className="bx bxl-twitter">
                     <TwitterIcon />
                   </i>
                 </a>
-                <a href="#" class="social-item">
-                  <i class="bx bxl-instagram">
+                <a href="#" className="social-item">
+                  <i className="bx bxl-instagram">
                     <InstagramIcon />
                   </i>
                 </a>
               </div>
             </div>
           </div>
-          <div class="col-8 col-md-6 col-sm-12">
-            <div class="row">
-              <div class="col-3 col-md-6 col-sm-6">
-                <div class="content">
+          <div className="col-8 col-md-6 col-sm-12">
+            <div className="row">
+              <div className="col-3 col-md-6 col-sm-6">
+                <div className="content">
                   <p style={{ fontWeight: "bold", marginLeft: "30px" }}>
                     FanClub
                   </p>
-                  <ul class="footer-menu" style={{ marginTop: "-10px" }}>
+                  <ul className="footer-menu" style={{ marginTop: "-10px" }}>
                     <li>
                       <a href="/about-us">Team</a>
                     </li>
@@ -60,12 +62,12 @@ export default function Footer() {
                   </ul>
                 </div>
               </div>
-              <div class="col-3 col-md-6 col-sm-6">
-                <div class="content">
+              <div className="col-3 col-md-6 col-sm-6">
+                <div className="content">
                   <p style={{ fontWeight: "bold", marginLeft: "30px" }}>
                     Browse
                   </p>
-                  <ul class="footer-menu" style={{ marginTop: "-10px" }}>
+                  <ul className="footer-menu" style={{ marginTop: "-10px" }}>
                     <li>
                       <a href="/">Online Platform</a>
                     </li>
@@ -78,10 +80,10 @@ export default function Footer() {
                   </ul>
                 </div>
               </div>
-              <div class="col-3 col-md-6 col-sm-6">
-                <div class="content">
+              <div className="col-3 col-md-6 col-sm-6">
+                <div className="content">
                   <p style={{ fontWeight: "bold", marginLeft: "30px" }}>Help</p>
-                  <ul class="footer-menu" style={{ marginTop: "-10px" }}>
+                  <ul className="footer-menu" style={{ marginTop: "-10px" }}>
                     <li>
                       <a href="/about-us">FAQ</a>
                     </li>
@@ -91,12 +93,12 @@ export default function Footer() {
                   </ul>
                 </div>
               </div>
-              <div class="col-3 col-md-6 col-sm-6">
-                <div class="content">
+              <div className="col-3 col-md-6 col-sm-6">
+                <div className="content">
                   <p style={{ fontWeight: "bold", marginLeft: "20px" }}>
                     Download App
                   </p>
-                  <ul class="footer-menu" style={{ marginTop: "-10px" }}>
+                  <ul className="footer-menu" style={{ marginTop: "-10px" }}>
                     <li>
                       <a href="#">
                         <img
@@ -131,5 +133,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+
   );
 }
