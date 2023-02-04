@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import $ from "jquery";
 import "../Pages/CSS/Navbar.css";
 import { Link } from "react-router-dom";
-import { UserContext } from "../App";
 import { setLogout } from "../state";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
