@@ -2,79 +2,135 @@ import React, { useContext } from "react";
 import $ from "jquery";
 import "../Pages/CSS/Navbar.css";
 import { Link } from "react-router-dom";
-import { UserContext } from '../App';
+import { UserContext } from "../App";
+import { setLogout } from "../state";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-
-
-export default function Navbar(props) {
+export default function Navbar() {
   $(document).ready(() => {
     $("#hamburger-menu").click(() => {
       $("#hamburger-menu").toggleClass("active");
       $("#nav-menu").toggleClass("active");
     });
   });
-
-  const { state, dispatch } = useContext(UserContext)
+  const dispatch = useDispatch();
+  //const { state, dispatch } = useContext(UserContext);
+  const slug = useSelector((state) => state.slug);
+  const loggedIn = useSelector((state) => state.loggedIn);
 
   const clear_user = () => {
-    localStorage.clear()
-    window.location.reload()
-  }
+    localStorage.clear();
+    window.location.reload();
+    dispatch(
+      setLogout({
+        slug: null,
+      })
+    );
+  };
   const NavItems = () => {
-    var strWithOutQuotes
-    var strWithQuotes = localStorage.getItem('username')
-    if (strWithQuotes) { strWithOutQuotes = strWithQuotes.replace(/['"]+/g, '') }
+    var strWithOutQuotes;
+    var strWithQuotes = localStorage.getItem("username");
+    if (strWithQuotes) {
+      strWithOutQuotes = strWithQuotes.replace(/['"]+/g, "");
+    }
 
-    console.log(strWithOutQuotes)
+    // var fanLink
+    // var loggedIn = localStorage.getItem('LoggedIn')
+
+    console.log(strWithOutQuotes);
+    // if (loggedIn === "Fan") {
+    //   fanLink = "/FanProfile";
+    // } else if (loggedIn === "Celebrity") {
+    //   fanLink = "/Profile";
+    // }
     // if(state){
-    if (localStorage.getItem('username')) {
-
-      return (
-        <ul className="nav-menu" id="nav-menu" style={{ marginTop: "10px" }}>
-          <li style={{ marginRight: "30px" }}>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <div className="dropdown">
-            <li >
-              <Link to={"/"}>Categories</Link>
+    if (localStorage.getItem("username")) {
+      if (loggedIn === "fan") {
+        return (
+          <ul className="nav-menu" id="nav-menu" style={{ marginTop: "10px" }}>
+            <li style={{ marginRight: "30px" }}>
+              <Link to={"/"}>Home</Link>
             </li>
-            <div className="dropdown-content">
-              <Link to={"/tvcategories"}>Tv Artist</Link>
-              <Link to={"/filmcategories"}>Film Icons </Link>
-              <Link to={"/bloggerscategories"}>Bloggers</Link>
-              <Link to={"/ytcategories"}>Yotubers</Link>
+            <div className="dropdown">
+              <li>
+                <Link to={"/"}>Categories</Link>
+              </li>
+              <div className="dropdown-content">
+                <Link to={"/tvcategories"}>Tv Artist</Link>
+                <Link to={"/filmcategories"}>Film Icons </Link>
+                <Link to={"/bloggerscategories"}>Bloggers</Link>
+                <Link to={"/ytcategories"}>Yotubers</Link>
+              </div>
             </div>
-          </div>
-          {/* <li>
+            {/* <li>
+                  <Link to={"/"}>Events</Link>
+                </li> */}
+            <li>
+              <Link to={"/fan-schedule"}>Schedule</Link>
+            </li>
+            <li>
+              <Link to={"/about-us"}>About</Link>
+            </li>
+            <li>
+              {/* <Link to={`${fanLink}/${strWithOutQuotes}`}>Profile</Link> */}
+              <Link to={`/FanProfile/${strWithOutQuotes}`}>Profile</Link>
+            </li>
+
+            <li onClick={clear_user}>
+              <Link to={"/signup-usermode"} className="btn btn-hover">
+                <span>Log out</span>
+              </Link>
+            </li>
+          </ul>
+        );
+      } else {
+        return (
+          <ul className="nav-menu" id="nav-menu" style={{ marginTop: "10px" }}>
+            <li style={{ marginRight: "30px" }}>
+              <Link to={"/"}>Home</Link>
+            </li>
+            <div className="dropdown">
+              <li>
+                <Link to={"/"}>Categories</Link>
+              </li>
+              <div className="dropdown-content">
+                <Link to={"/tvcategories"}>Tv Artist</Link>
+                <Link to={"/filmcategories"}>Film Icons </Link>
+                <Link to={"/bloggerscategories"}>Bloggers</Link>
+                <Link to={"/ytcategories"}>Yotubers</Link>
+              </div>
+            </div>
+            {/* <li>
                 <Link to={"/"}>Events</Link>
               </li> */}
-          <li>
-            <Link to={"/fan-schedule"}>Schedule</Link>
-          </li>
-          <li>
-            <Link to={"/about-us"}>About</Link>
-          </li>
-          <li>
+            <li>
+              <Link to={"/fan-schedule"}>Schedule</Link>
+            </li>
+            <li>
+              <Link to={"/about-us"}>About</Link>
+            </li>
+            <li>
+              {/* <Link to={`${fanLink}/${strWithOutQuotes}`}>Profile</Link> */}
+              <Link to={`/Profile/${strWithOutQuotes}`}>Profile</Link>
+            </li>
 
-            <Link to={`/profile/${strWithOutQuotes}`}>Profile</Link>
-          </li>
-
-          <li onClick={clear_user}>
-            <Link to={"/signup-usermode"} className="btn btn-hover">
-              <span>Log out</span>
-            </Link>
-          </li>
-        </ul>
-      )
-    }
-    else {
+            <li onClick={clear_user}>
+              <Link to={"/signup-usermode"} className="btn btn-hover">
+                <span>Log out</span>
+              </Link>
+            </li>
+          </ul>
+        );
+      }
+    } else {
       return (
         <ul className="nav-menu" id="nav-menu" style={{ marginTop: "10px" }}>
           <li style={{ marginRight: "30px" }}>
             <Link to={"/"}>Home</Link>
           </li>
           <div className="dropdown">
-            <li >
+            <li>
               <Link to={"/"}>Categories</Link>
             </li>
             <div className="dropdown-content">
@@ -93,26 +149,22 @@ export default function Navbar(props) {
             <Link to={"/signup-usermode"} className="btn btn-hover">
               <span>Log in</span>
             </Link>
-            {/* <a href="/sign-usermode" className="btn btn-hover">
-                              <span>Sign Up</span>
-                          </a> */}
           </li>
         </ul>
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className="nav-wrapper">
       <div className="container">
         <div className="nav">
-          <a
-            href="/"
+          <div
             className="logo"
             style={{ marginTop: "-10px", marginLeft: "10px" }}
           >
             Fan<span className="main-color">C</span>lub
-          </a>
+          </div>
           <NavItems />
           {/* <!-- MOBILE MENU TOGGLE --> */}
           <div className="hamburger-menu" id="hamburger-menu">

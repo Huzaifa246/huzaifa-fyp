@@ -27,7 +27,9 @@ export default function Booking() {
   const [total_cost, setTotal_Cost] = useState("");
   const [total_members, setTotal_Members] = useState("");
   const [message, setMessage] = useState("");
-  const [dtPicker, setDTPicker] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  // const [name, setName] = useState("");
 
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
@@ -37,6 +39,7 @@ export default function Booking() {
   });
 
   const [celeb, setCeleb] = useState({});
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +52,6 @@ export default function Booking() {
           .then((resp) => {
             setCeleb(resp.data.celebrities);
             setId(resp.data.celebrities._id);
-            console.log(celeb)
           });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
@@ -63,26 +65,26 @@ export default function Booking() {
 
 
   const new_meeting = {
+    name: celeb.name,
     total_cost: total_cost,
     total_members: total_members,
     message: message,
-    date: dtPicker,
-    // time: time,
+    date: date,
+    time: time,
   };
-
 
   const updateUser = async (e) => {
 
+    console.log("Name meeting", celeb.name);
     axios.put(`http://localhost:5000/api/celebs/${id}`, new_meeting)
 
     alert("meeting added");
+
   };
   function myFunction(e) {
     e.preventDefault();
   }
 
-
-  console.log(celeb.meeting);
   return (
     <>
       <div id="booking" className="section">
@@ -153,7 +155,6 @@ export default function Booking() {
                           <option value="1">1</option>
                           <option value="5">5</option>
                           <option value="10">10</option>
-                          <option value="15">15</option>
                         </select>
                       </div>
                     </div>
@@ -172,25 +173,23 @@ export default function Booking() {
                     />
                   </div>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <input
                           className="form-control"
-                          type="datetime-local"
-                          // min="2022-06-14 Time 00:00" max="2030-01-01Time00:00"
-                          // pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}Time[0-9]{2}:[0-9]{2}"
+                          type="date"
                           required
-                          name="date and time"
-                          value={dtPicker}
+                          name="date"
+                          value={date}
                           onChange={(event) => {
-                            setDTPicker(event.target.value);
+                            setDate(event.target.value);
                           }}
                         />
                       </div>
                     </div>
                     {/* time */}
 
-                    {/* <div className="col-md-6">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <input
                           className="form-control"
@@ -204,9 +203,11 @@ export default function Booking() {
                         />
                         <span className="form-label">Time</span>
                       </div>
-                    </div> */}
+                    </div>
                     {/* time end */}
                   </div>
+
+
                   <div className="form-btn">
                     <button className="submit-btn" onClick={updateUser}>
                       Post Meeting

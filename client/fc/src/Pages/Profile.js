@@ -42,21 +42,15 @@ const styles = (theme) => ({
   section1: {
     margin: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`,
   },
-  section2: {
-    margin: theme.spacing.unit * 1,
-  },
   section3: {
     margin: `${theme.spacing.unit * 6}px ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2
       }px`,
   },
 });
 
-function handleDelete() {
-  alert("Session is available"); // eslint-disable-line no-alert
-}
-
-
-
+// ...state store previous state also called spread operator
+// (current state, action performed)
+// payload store data from backend
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -73,14 +67,14 @@ const reducer = (state, action) => {
 function Profile(props, setCurrentId) {
   const params = useParams();
   const { slug } = params;
+  const [celeb, setCeleb] = useState({})
+  const [id, setId] = useState()
+  const [meet, setMeet] = useState()
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
-    // celebs: [],
     loading: true,
     error: "",
   });
-
-  const [celeb, setCeleb] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,11 +84,12 @@ function Profile(props, setCurrentId) {
         // get data of every individual celeb by slug
         const result = await axios.get(`http://localhost:5000/api/celebs/indi/${slug}`).then((resp) => {
           setCeleb(resp.data.celebrities);
-          console.log(resp.data.celebrities);
+          setMeet(resp.data.celebrities.meeting)
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-
+        console.log(result.data, "DATA");
+        console.log(result.payload, "payload");
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
@@ -102,6 +97,16 @@ function Profile(props, setCurrentId) {
     fetchData();
 
   }, [slug]);
+  function handleDelete() {
+    axios.delete(`http://localhost:5000/api/celebs/${id}/meet/${meet}`)
+      .then(response => {
+        console.log(response.data.celebrities.meet, "delete ky click par");
+      })
+      .catch(error => {
+        console.log(error, "Error aa raha");
+      }); // eslint-disable-line no-alert
+  }
+
   const meeting = celeb.meeting
   // meeting?.map((c) => (
   //   console.log(c) 
@@ -111,7 +116,7 @@ function Profile(props, setCurrentId) {
 
   function AvailableDate() {
     const sessions = meeting?.map((items) => {
-      function delete_meeting() {
+      function getID() {
         alert(items._id)
         setDelMeet(items._id)
       }
@@ -125,43 +130,13 @@ function Profile(props, setCurrentId) {
               label={items.date}
               clickable
               color="primary"
-              onDelete={handleDelete}
-              deleteIcon={<DeleteIcon />}
+              deleteIcon={<DeleteIcon onClick={handleDelete()} />}
               variant="outlined"
-              onClick={delete_meeting}
+              onClick={getID}
               style={{ width: "40%", marginLeft: "20px", marginTop: "10px" }}
 
             />
 
-          </>
-        );
-      }
-    });
-
-    return <div>{sessions}</div>;
-  }
-  function AvailableTime(props) {
-    const sessions = meeting?.map((items) => {
-      function delete_meeting() {
-        alert(items._id)
-      }
-      if (items.time !== undefined) {
-        return (
-          <>
-            <Chip
-              key=""
-              avatar={<Avatar>T</Avatar>}
-              label={items.time}
-              clickable
-              color="primary"
-              // onClick={() => handleDelete(items.id)}
-              onDelete={handleDelete}
-              onClick={delete_meeting}
-              deleteIcon={<DeleteIcon />}
-              variant="outlined"
-              style={{ minWidth: "40%", marginLeft: "20px", marginTop: "10px" }}
-            // style={{ maxWidth: "50%", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}
-            />
           </>
         );
       }
@@ -250,14 +225,6 @@ function Profile(props, setCurrentId) {
                 <AvailableDate />
               </div>
               <Divider variant="middle" />
-              <div className={classes.section2}>
-                <Typography gutterBottom variant="h6">
-                  Avalible Time Slots
-                </Typography>
-                <div>
-                  <AvailableTime />
-                </div>
-              </div>
               <div className={classes.section3}>
                 <Link to={`/profile/${celeb.slug}/add-session`}>
                   <Button variant="contained" color="primary" fullWidth>

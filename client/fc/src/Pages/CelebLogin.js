@@ -32,14 +32,7 @@ export default function Login({ props, currentUser, setCurrentUser }) {
           localStorage.setItem("email", JSON.stringify(email));
           localStorage.setItem("password", JSON.stringify(password));
           setCurrentUser(slug)
-          console.log(res.data.celebrities.email)
-          console.log("my entered " + email)
-          console.log(res.data.celebrities.slug)
-          console.log("my entered " + slug)
-          console.log(res.data.celebrities.password)
-          console.log("my entered " + password)
-          // console.log("objct se nikala hai "+res.data.celebrities.slug);
-          // console.log("login mein likha hai " +slug)
+          localStorage.setItem("LoggedIn", JSON.stringify("Celebrity"));
           navigate(`/profile/${slug}`);
         }
         else {

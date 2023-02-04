@@ -22,6 +22,7 @@ import TVcategories from "./Pages/TVcategories";
 import Filmcategories from "./Pages/Filmcategories";
 import Bloggerscategories from "./Pages/Bloggerscategories";
 import YTcategories from "./Pages/YTcategories";
+import PV from "./Pages/PV";
 import ProfileViewAs from "./Pages/ProfileViewAs";
 import { createContext, useReducer, useState } from "react";
 import { initialState, reducer } from "./reducer/UseReducer"
@@ -34,18 +35,16 @@ import FanProfile from './Pages/FanProfile';
 import ForgotPasswordCeleb from './Components/ForgotPasswordCeleb/index';
 import CelebLoginCopy from './Pages/CelebLoginCopy';
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
-import NewSlide from './Pages/NewSlide';
 
 import Meet from './Components/Meeting/Meet';
-import Demo from './Pages/Demo';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
 
-
   const [state, dispatch] = useReducer(reducer, initialState)
   const [currentId, setCurrentId] = useState(null)
   const [currentUser, setCurrentUser] = useState("")
+  const [fanProps, setFanProps] = useState(null)
   return (
 
     <BrowserRouter>
@@ -56,14 +55,12 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/NewSlide" element={<NewSlide />} />
-            <Route path="/Demo" element={<Demo />} />
             <Route path="/Meet" element={<Meet />} />
 
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
             <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
             <Route path="/payment" element={<StripeContainer />} />
-            <Route path="/fan-schedule" element={<Schedule />} />
+            <Route path="/fan-schedule" element={<Schedule msg="join meeting" />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/about-us" element={<AboutUs />} />
 
@@ -71,17 +68,17 @@ function App() {
             <Route path="/login-usermode" element={<LoginUserMode />} />
 
             <Route path="/celeb-login" element={<CelebLogin setCurrentUser={setCurrentUser} />} />
-            <Route path="/fan-login" element={<FanLogin setCurrentUser={setCurrentUser} />} />
+            <Route path="/fan-login" element={<FanLogin setCurrentUser={setCurrentUser} setFanProps={setFanProps} />} />
             <Route path="/celeb-signup" element={<CelebSignup />} />
-            {/* <Route path="/fan-signup" element={<FanSignup />} /> */}
             <Route path="/fanSignup" element={<Signup />} />
+
 
             <Route path="/profile/:slug" element={<Profile setCurrentId={setCurrentId} />} />
 
             <Route path="/FanProfile/:slug" element={<FanProfile setCurrentId={setCurrentId} />} />
             <Route path="/FanProfile/edit-profile/:slug" element={<FanEditProfile currentId={currentId} setCurrentId={setCurrentId} />} />
 
-            <Route path="/profile/view-as/:slug" element={<ProfileViewAs />} />
+            <Route path="/profile/view-as/:slug" element={<ProfileViewAs currentId={currentId} setCurrentId={setCurrentId} />} />
             <Route path="/profile/edit-profile/:slug" element={<EditProfile currentId={currentId} setCurrentId={setCurrentId} />} />
             <Route path="/profile/:slug/add-session" element={<Booking />} />
 

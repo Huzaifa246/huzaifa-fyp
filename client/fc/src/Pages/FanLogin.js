@@ -9,7 +9,6 @@
 // export default function Login({ props, currentUser, setCurrentUser }) {
 //   const { state, dispatch } = useContext(UserContext);
 
-
 //   const navigate = useNavigate();
 
 //   const [email, setEmail] = useState("");
@@ -127,11 +126,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./CSS/fanLogin.css";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state/index";
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [slug, setSlug] = useState("");
+  const dispatch = useDispatch();
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
@@ -144,6 +146,12 @@ const Login = () => {
       const { data: res } = await axios.get(url, data);
       localStorage.setItem("token", res.data);
       localStorage.setItem("username", JSON.stringify(slug));
+      dispatch(
+        setLogin({
+          slug: slug,
+          loggedIn: "fan",
+        })
+      );
       console.log(res.data + "res.data hai ye");
       window.location = `/FanProfile/${slug}`;
       // window.localStorage.setItem("isLoggedIn", true);
@@ -160,14 +168,13 @@ const Login = () => {
 
   return (
     <div className="Auth-form-container">
-
       <form className="Auth-form" onSubmit={handleSubmit}>
         <h3 className="Auth-form-title">Welcome back, Fan!</h3>
         <div className="text-center">
-          Not yet registered? {" "}
+          Not yet registered?{" "}
           <span className="link-primary" style={{ color: "" }}>
             {/* onClick={changeAuthMode}> */}
-            <Link to={'/fanSignup'}>Sign up</Link>
+            <Link to={"/fanSignup"}>Sign up</Link>
           </span>
         </div>
         <div className="Auth-form-content">

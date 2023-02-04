@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
 import { TextField } from "@mui/material";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useStateValue } from "../reducer/StateProvider";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const TvIcons = React.memo(() => {
   const [data, setData] = useState([]);
@@ -20,7 +20,7 @@ const TvIcons = React.memo(() => {
         return setData(resp.data.celebrities);
       });
     };
-    func()
+    func();
   }, []);
 
   const settings = {
@@ -42,10 +42,10 @@ const TvIcons = React.memo(() => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
-    ]
+    ],
   };
 
   return (
@@ -54,36 +54,36 @@ const TvIcons = React.memo(() => {
         TV Icons
       </div>
       <Slider {...settings}>
-        {data.filter((celeb) => celeb.category === "tv").map((celeb) => {
-          return (
-            <div key={celeb.id}>
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
+        {data
+          .filter((celeb) => celeb.category === "tv")
+          .map((celeb) => {
+            return (
+              <div key={celeb.id}>
+                <Col style={{ paddingBottom: "10px" }}>
+                  <div className="card" style={{ marginLeft: "50px" }}>
+                    <figure>
+                      <LazyLoadImage
+                        src={celeb.image}
+                        alt="Hotel"
+                        style={{ width: "400px", height: "250px" }}
+                      />
+                    </figure>
 
-                  <div className="card-body">
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
+                    <div className="card-body">
+                      <Link to={`/profile/view-as/${celeb.slug}`}>
+                        <h3 className="card-title">{celeb.name}</h3>
+                      </Link>
+                      <p className="card-text">{celeb.bio}</p>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </div>
-          );
-        })}
+                </Col>
+              </div>
+            );
+          })}
       </Slider>
     </div>
-
   );
-
-})
+});
 
 const FilmIcons = React.memo(() => {
   const [data, setData] = useState([]);
@@ -94,7 +94,7 @@ const FilmIcons = React.memo(() => {
         return setData(resp.data.celebrities);
       });
     };
-    func()
+    func();
   }, []);
 
   const settings = {
@@ -116,10 +116,10 @@ const FilmIcons = React.memo(() => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
-    ]
+    ],
   };
 
   return (
@@ -128,36 +128,36 @@ const FilmIcons = React.memo(() => {
         Film Icons
       </div>
       <Slider {...settings}>
-        {data.filter((celeb) => celeb.category === "film").map((celeb) => {
-          return (
-            <div key={celeb.id}>
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
+        {data
+          .filter((celeb) => celeb.category === "film")
+          .map((celeb) => {
+            return (
+              <div key={celeb.id}>
+                <Col style={{ paddingBottom: "10px" }}>
+                  <div className="card" style={{ marginLeft: "50px" }}>
+                    <figure>
+                      <LazyLoadImage
+                        src={celeb.image}
+                        alt="Hotel"
+                        style={{ width: "400px", height: "250px" }}
+                      />
+                    </figure>
 
-                  <div className="card-body">
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
+                    <div className="card-body">
+                      <Link to={`/profile/view-as/${celeb.slug}`}>
+                        <h3 className="card-title">{celeb.name}</h3>
+                      </Link>
+                      <p className="card-text">{celeb.bio}</p>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </div>
-          );
-        })}
+                </Col>
+              </div>
+            );
+          })}
       </Slider>
     </div>
-
   );
-
-})
+});
 const Bloggers = React.memo(() => {
   const [data, setData] = useState([]);
 
@@ -167,7 +167,7 @@ const Bloggers = React.memo(() => {
         return setData(resp.data.celebrities);
       });
     };
-    func()
+    func();
   }, []);
 
   const settings = {
@@ -189,10 +189,10 @@ const Bloggers = React.memo(() => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
-    ]
+    ],
   };
 
   return (
@@ -201,36 +201,36 @@ const Bloggers = React.memo(() => {
         Bloggers
       </div>
       <Slider {...settings}>
-        {data.filter((celeb) => celeb.category === "blogger").map((celeb) => {
-          return (
-            <div key={celeb.id}>
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
+        {data
+          .filter((celeb) => celeb.category === "blogger")
+          .map((celeb) => {
+            return (
+              <div key={celeb.id}>
+                <Col style={{ paddingBottom: "10px" }}>
+                  <div className="card" style={{ marginLeft: "50px" }}>
+                    <figure>
+                      <LazyLoadImage
+                        src={celeb.image}
+                        alt="Hotel"
+                        style={{ width: "400px", height: "250px" }}
+                      />
+                    </figure>
 
-                  <div className="card-body">
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
+                    <div className="card-body">
+                      <Link to={`/profile/view-as/${celeb.slug}`}>
+                        <h3 className="card-title">{celeb.name}</h3>
+                      </Link>
+                      <p className="card-text">{celeb.bio}</p>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </div>
-          );
-        })}
+                </Col>
+              </div>
+            );
+          })}
       </Slider>
     </div>
-
   );
-
-})
+});
 const Youtubers = React.memo(() => {
   const [data, setData] = useState([]);
 
@@ -240,7 +240,7 @@ const Youtubers = React.memo(() => {
         return setData(resp.data.celebrities);
       });
     };
-    func()
+    func();
   }, []);
 
   const settings = {
@@ -262,10 +262,10 @@ const Youtubers = React.memo(() => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
-    ]
+    ],
   };
 
   return (
@@ -274,36 +274,36 @@ const Youtubers = React.memo(() => {
         Youtubers
       </div>
       <Slider {...settings}>
-        {data.filter((celeb) => celeb.category === "youtuber").map((celeb) => {
-          return (
-            <div key={celeb.id}>
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
+        {data
+          .filter((celeb) => celeb.category === "youtuber")
+          .map((celeb) => {
+            return (
+              <div key={celeb.id}>
+                <Col style={{ paddingBottom: "10px" }}>
+                  <div className="card" style={{ marginLeft: "50px" }}>
+                    <figure>
+                      <LazyLoadImage
+                        src={celeb.image}
+                        alt="Hotel"
+                        style={{ width: "400px", height: "250px" }}
+                      />
+                    </figure>
 
-                  <div className="card-body">
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
+                    <div className="card-body">
+                      <Link to={`/profile/view-as/${celeb.slug}`}>
+                        <h3 className="card-title">{celeb.name}</h3>
+                      </Link>
+                      <p className="card-text">{celeb.bio}</p>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </div>
-          );
-        })}
+                </Col>
+              </div>
+            );
+          })}
       </Slider>
     </div>
-
   );
-
-})
+});
 
 const NextArrow = (props) => {
   const { className, onClick } = props;
@@ -312,7 +312,7 @@ const NextArrow = (props) => {
       <i className="fa fa-arrow-right"></i>
     </div>
   );
-}
+};
 
 const PrevArrow = (props) => {
   const { className, onClick } = props;
@@ -321,7 +321,7 @@ const PrevArrow = (props) => {
       <i className="fa fa-arrow-left"></i>
     </div>
   );
-}
+};
 
 const Search = React.memo((props) => {
   const [data, setData] = useState([]);
@@ -336,7 +336,7 @@ const Search = React.memo((props) => {
         return setData(resp.data.celebrities);
       });
     };
-    func()
+    func();
   }, []);
 
   console.log(data.filter((celeb) => celeb.name === props));
@@ -348,39 +348,39 @@ const Search = React.memo((props) => {
         Found Results
       </div>
 
+      {data
+        .filter((celeb) => celeb.name === props.celeb)
+        .map((celeb) => {
+          return (
+            <>
+              {/* slider */}
 
-      {data.filter((celeb) => celeb.name === props.celeb).map((celeb) => {
-        return (
-          <>
-            {/* slider */}
+              <Col style={{ paddingBottom: "10px" }}>
+                <div className="card" style={{ marginLeft: "50px" }}>
+                  <figure>
+                    <LazyLoadImage
+                      src={celeb.image}
+                      alt="Hotel"
+                      style={{ width: "400px", height: "250px" }}
+                    />
+                  </figure>
 
-            <Col style={{ paddingBottom: "10px" }}>
-              <div className="card" style={{ marginLeft: "50px" }}>
-                <figure>
-                  <LazyLoadImage
-                    src={celeb.image}
-                    alt="Hotel"
-                    style={{ width: "400px", height: "250px" }}
-                  />
-                </figure>
-
-                <div className="card-body">
-                  {/* <h3 className="card-title">{celeb.name}</h3> */}
-                  <Link to={`/profile/view-as/${celeb.slug}`}>
-                    <h3 className="card-title">{celeb.name}</h3>
-                  </Link>
-                  <p className="card-text">{celeb.bio}</p>
+                  <div className="card-body">
+                    {/* <h3 className="card-title">{celeb.name}</h3> */}
+                    <Link to={`/profile/view-as/${celeb.slug}`}>
+                      <h3 className="card-title">{celeb.name}</h3>
+                    </Link>
+                    <p className="card-text">{celeb.bio}</p>
+                  </div>
                 </div>
-              </div>
-            </Col>
-            {/* slider end */}
-          </>
-        );
-      })}
-
+              </Col>
+              {/* slider end */}
+            </>
+          );
+        })}
     </div>
   );
-})
+});
 
 export default function Dashboard() {
   // --- Search Bar
@@ -389,7 +389,6 @@ export default function Dashboard() {
     setInputText(e.target.value);
   };
   // -----------
-  const [{ user }, dispatch] = useStateValue();
 
   return (
     <>
