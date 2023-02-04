@@ -35,16 +35,6 @@ export default function Navbar() {
       strWithOutQuotes = strWithQuotes.replace(/['"]+/g, "");
     }
 
-    // var fanLink
-    // var loggedIn = localStorage.getItem('LoggedIn')
-
-    console.log(strWithOutQuotes);
-    // if (loggedIn === "Fan") {
-    //   fanLink = "/FanProfile";
-    // } else if (loggedIn === "Celebrity") {
-    //   fanLink = "/Profile";
-    // }
-    // if(state){
     if (localStorage.getItem("username")) {
       if (loggedIn === "fan") {
         return (
@@ -101,9 +91,6 @@ export default function Navbar() {
                 <Link to={"/ytcategories"}>Yotubers</Link>
               </div>
             </div>
-            {/* <li>
-                <Link to={"/"}>Events</Link>
-              </li> */}
             <li>
               <Link to={"/fan-schedule"}>Schedule</Link>
             </li>
@@ -111,7 +98,6 @@ export default function Navbar() {
               <Link to={"/about-us"}>About</Link>
             </li>
             <li>
-              {/* <Link to={`${fanLink}/${strWithOutQuotes}`}>Profile</Link> */}
               <Link to={`/Profile/${strWithOutQuotes}`}>Profile</Link>
             </li>
 
