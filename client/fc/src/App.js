@@ -22,7 +22,6 @@ import TVcategories from "./Pages/TVcategories";
 import Filmcategories from "./Pages/Filmcategories";
 import Bloggerscategories from "./Pages/Bloggerscategories";
 import YTcategories from "./Pages/YTcategories";
-import PV from "./Pages/PV";
 import ProfileViewAs from "./Pages/ProfileViewAs";
 import { createContext, useReducer, useState } from "react";
 import { initialState, reducer } from "./reducer/UseReducer"
