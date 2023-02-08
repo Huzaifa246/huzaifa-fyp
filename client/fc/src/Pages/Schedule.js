@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 const Meetings = React.memo((props) => {
   const [data, setData] = useState([]);
-  const [id, setId] = useState("");
   const slug = useSelector((state) => state.slug);
   const meeting = useSelector((state) => state.meeting);
 
@@ -29,7 +28,6 @@ const Meetings = React.memo((props) => {
       <div className="section-header" style={{ marginTop: "50px" }}>
         Meetings
       </div>
-      {/* {data.filter((users) => users).map((users) => { */}
       {filteredData.map((users) => {
         return (
           <>
@@ -50,7 +48,7 @@ const Meetings = React.memo((props) => {
                   <strong>{meeting.name}</strong>
                   {/* <strong>{users.cost}</strong> */}
                 </div>
-                <a href="https://video-call-fc.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <a href="http://localhost:5000/createMeeting" target="_blank" rel="noopener noreferrer">
                   <button>Join Meeting</button>
                 </a>
               </div>
