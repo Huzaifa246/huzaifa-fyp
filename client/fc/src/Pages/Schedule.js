@@ -2,7 +2,6 @@ import "./CSS/Schedule.css"
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 const Meetings = React.memo((props) => {
