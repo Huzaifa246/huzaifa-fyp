@@ -2,20 +2,10 @@
 import "./CSS/Profileviewas.css";
 import Col from "react-bootstrap/Col";
 
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Grid, Paper, Box } from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+
 import axios from "axios";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useStateValue } from "../reducer/StateProvider";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { setMeeting } from "../state/index";
@@ -39,7 +29,6 @@ const Meetings = React.memo(() => {
   }, []);
 
   const handleBookMeeting = (meetingDetails) => {
-    //dispatch({ type: 'SET_MEETID', meetid: meetingId });
     dispatch(
       setMeeting({
         meeting: meetingDetails,
@@ -53,7 +42,6 @@ const Meetings = React.memo(() => {
       <div className="section-header" style={{ marginTop: "50px" }}>
         Meetings
       </div>
-      {/* {data.map((celeb) => { */}
       {data.map((meeting) => {
         return (
           <>
@@ -107,7 +95,7 @@ function Profile(props, setCurrentId) {
             setId(resp.data.celebrities._id);
             console.log(id);
           });
-      } catch (err) {}
+      } catch (err) { }
     };
     fetchData();
   }, [slug]);
