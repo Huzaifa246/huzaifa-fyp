@@ -44,9 +44,9 @@ function EditProfile({ currentId, setCurrentId }) {
   //-------------Open ----- 
   const [open, setOpen] = React.useState(false);
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -108,7 +108,7 @@ function EditProfile({ currentId, setCurrentId }) {
       }).catch((error) => {
         console.error(error)
       });
-    setOpen(true);
+    setOpen(false);
   };
 
   return (
@@ -185,7 +185,7 @@ function EditProfile({ currentId, setCurrentId }) {
                   }}
                 />
               </div>
-              <Button className="userUpdateButton" onClick={updateUser} color="error" variant="contained">
+              <Button className="userUpdateButton" onClick={handleOpen} color="error" variant="contained">
                 Update
               </Button>
               <Dialog
@@ -204,7 +204,7 @@ function EditProfile({ currentId, setCurrentId }) {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="error" variant="contained">Disagree</Button>
-                  <Button onClick={handleClose} autoFocus color="success" variant="contained">
+                  <Button onClick={updateUser} autoFocus color="success" variant="contained">
                     Agree
                   </Button>
                 </DialogActions>

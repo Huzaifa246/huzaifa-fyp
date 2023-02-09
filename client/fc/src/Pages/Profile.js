@@ -1,52 +1,18 @@
 // import { Link } from "react-router-dom";
 import "./CSS/profile.css";
 import React, { useEffect, useReducer, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Grid, Paper } from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
+import Col from "react-bootstrap/Col";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { user4 } from "./imports";
 // --------------------
-
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  align: "center",
-  color: theme.palette.text.secondary,
-}));
-const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    minWidth: 350,
-    maxWidth: 500,
-    backgroundColor: theme.palette.background.paper,
-    align: "center",
-    justifyContent: "center",
-  },
-  chip: {
-    marginRight: theme.spacing.unit,
-  },
-  section1: {
-    margin: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2}px`,
-  },
-  section3: {
-    margin: `${theme.spacing.unit * 6}px ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2
-      }px`,
-  },
-});
 
 // ...state store previous state also called spread operator
 // (current state, action performed)
@@ -64,12 +30,107 @@ const reducer = (state, action) => {
   }
 };
 
+
+const Meetings = React.memo(() => {
+  const params = useParams();
+  const { slug } = params;
+  const [data, setData] = useState([]);
+  const [celeb, setCeleb] = useState(null)
+
+  useEffect(() => {
+    const func = async () => {
+      await axios
+        .get(`http://localhost:5000/api/celebs/indi/${slug}`)
+        .then((resp) => {
+          setData(resp.data.celebrities.meeting);
+          setCeleb(resp.data.celebrities);
+        });
+    };
+    func();
+  }, []);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async (meet_id) => {
+    try {
+      axios.delete(`http://localhost:5000/api/celebs/${celeb._id}/meet/${meet_id}`)
+    }
+    catch (error) {
+      console.error(error, "ERROR IN DELETE");
+    }
+    setOpen(false)
+  };
+
+
+  return (
+    <>
+      <div className="section-header" style={{ marginTop: "50px" }}>
+        Meetings
+      </div>
+      {data.map((meeting) => {
+        return (
+          <>
+            {/* slider */}
+
+            <Col className="meeting__column" style={{ paddingBottom: "10px" }}>
+              <div className="bookedMeeting">
+                <div className="bookedMeeting__title">
+                  <strong>Meeting ID : {meeting._id}</strong>
+                </div>
+                <div className="bookedMeeting__title">
+                  <strong>Cost : {meeting.total_cost}</strong>
+                </div>
+                <div className="bookedMeeting__time">
+                  <strong>Time : {meeting.time}</strong>
+                  <strong>Date : {meeting.date}</strong>
+                </div>
+                {/* //onClick={() => handleDelete()} */}
+                <Button onClick={handleOpen}>
+                  Delete Session
+                </Button>
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"UPDATE PROFILE?"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Are You sure you want to delete this session???
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} >Disagree</Button>
+                    <Button onClick={() => handleDelete(meeting._id)} style={{ color: "red" }}>
+                      Delete Session
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            </Col>
+            {/* slider end */}
+          </>
+        );
+      })}
+      ;
+    </>
+  );
+});
 function Profile(props, setCurrentId) {
   const params = useParams();
   const { slug } = params;
   const [celeb, setCeleb] = useState({})
   const [id, setId] = useState()
-  const [meet, setMeet] = useState()
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -84,7 +145,6 @@ function Profile(props, setCurrentId) {
         // get data of every individual celeb by slug
         const result = await axios.get(`http://localhost:5000/api/celebs/indi/${slug}`).then((resp) => {
           setCeleb(resp.data.celebrities);
-          setMeet(resp.data.celebrities.meeting)
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
@@ -97,55 +157,6 @@ function Profile(props, setCurrentId) {
     fetchData();
 
   }, [slug]);
-  function handleDelete() {
-    axios.delete(`http://localhost:5000/api/celebs/${id}/meet/${meet}`)
-      .then(response => {
-        console.log(response.data.celebrities.meet, "delete ky click par");
-      })
-      .catch(error => {
-        console.log(error, "Error aa raha");
-      }); // eslint-disable-line no-alert
-  }
-
-  const meeting = celeb.meeting
-  // meeting?.map((c) => (
-  //   console.log(c) 
-  // ))
-
-  const [delMeet, setDelMeet] = useState()
-
-  function AvailableDate() {
-    const sessions = meeting?.map((items) => {
-      function getID() {
-        alert(items._id)
-        setDelMeet(items._id)
-      }
-
-      if (items.date !== undefined) {
-        return (
-          <>
-            <Chip
-              key=""
-              avatar={<Avatar>D</Avatar>}
-              label={items.date}
-              clickable
-              color="primary"
-              deleteIcon={<DeleteIcon onClick={handleDelete()} />}
-              variant="outlined"
-              onClick={getID}
-              style={{ width: "40%", marginLeft: "20px", marginTop: "10px" }}
-
-            />
-
-          </>
-        );
-      }
-    });
-
-    return <div>{sessions}</div>;
-  }
-  const { classes } = props;
-
 
   return (
     <>
@@ -204,45 +215,16 @@ function Profile(props, setCurrentId) {
           </div>
         </div>
       </div>
-
-      {/* <Box sx={{ display: 'flex', justifyContent: "center", alignItems: 'center' }}> */}
-      {/* Sessions Grid Starts */}
-      {/* IS DIV PY KAM HO RAHA */}
-      <div className="profile-div" style={{ align: "center", display: 'flex', justifyContent: "center", paddingTop: "50px" }} >
-        <Grid item xs={4} style={{ maxWidth: "100%" }}>
-          <Item>
-            <div className={classes.root}>
-              <div className={classes.section1}>
-                <Grid container alignItems="center">
-                  <Grid item xs>
-                    <Typography gutterBottom variant="h6">
-                      Avalible Sessions
-                    </Typography>
-                  </Grid>
-                  <Grid item></Grid>
-                </Grid>
-
-                <AvailableDate />
-              </div>
-              <Divider variant="middle" />
-              <div className={classes.section3}>
-                <Link to={`/profile/${celeb.slug}/add-session`}>
-                  <Button variant="contained" color="primary" fullWidth>
-                    Add Session
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </Item>
-        </Grid>
+      <div className="profile-div" style={{ align: "center", display: 'flex', justifyContent: "center", margin: "10px" }} >
+        <Link to={`/profile/${celeb.slug}/add-session`}>
+          <Button variant="contained" style={{ backgroundColor: "rgb(39, 0, 0)", color: "white" }} size="large">
+            Add Session
+          </Button>
+        </Link>
       </div>
-      {/* Sessions Grid End */}
+      <Meetings />
     </>
   );
 }
 
-Profile.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Profile);
+export default Profile;
