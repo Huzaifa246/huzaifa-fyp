@@ -92,7 +92,7 @@ function EditProfile({ currentId, setCurrentId }) {
     formData.append('image', updateImage)
     console.log("imageForm", formData.get('image'))
     // image: e.target.files,
-    axios.put(`http://localhost:5000/api/celebs/${id}`, {
+    axios.put(`http://localhost:5000/api/celebs/editProfile/${id}`, {
       name: name,
       bio: bio,
       category: category
@@ -143,7 +143,6 @@ function EditProfile({ currentId, setCurrentId }) {
                     setName(e.target.value);
                   }}
                 />
-                {name}
               </div>
               <div className="userUpdateItem">
                 <label style={{ color: "black" }}>Bio</label>
@@ -157,7 +156,6 @@ function EditProfile({ currentId, setCurrentId }) {
                     setBio(e.target.value);
                   }}
                 />
-                {bio}
               </div>
               <div className="userUpdateItem">
                 <label style={{ color: "black" }}>Category</label>
@@ -171,7 +169,6 @@ function EditProfile({ currentId, setCurrentId }) {
                     setCategory(e.target.value);
                   }}
                 />
-                {category}
               </div>
             </div>
             <div className="userUpdateRight">
