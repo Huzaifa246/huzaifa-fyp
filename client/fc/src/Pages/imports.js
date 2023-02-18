@@ -32,5 +32,5 @@ export { default as DeleteIcon } from "@material-ui/icons/Delete";
 export { default as axios } from "axios";
 export { useParams, Link, useNavigate } from "react-router-dom";
 export { default as useState, useEffect, useReducer, useContext } from "react";
-export { React, Fragment } from "react";
+export { Fragment } from "react";
 export { default as Slider } from "react-slick";

@@ -122,7 +122,7 @@
 //   );
 // }
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./CSS/fanLogin.css";
@@ -130,7 +130,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../state/index";
 
 const Login = () => {
-  const [data, setData] = useState({ email: "", password: "" });
+  const [data, setData] = useState({ slug: "", password: "" });
   const [error, setError] = useState("");
   const [slug, setSlug] = useState("");
   const dispatch = useDispatch();
@@ -138,22 +138,33 @@ const Login = () => {
     setData({ ...data, [input.name]: input.value });
   };
 
+  // useEffect(() => {
+  //   const func = async () => {
+  //     await axios
+  //       .get(`http://localhost:5000/api/users/indiv/${data.email}`)
+  //       .then((resp) => {
+  //         return setUser(resp.data.users);
+  //       });
+  //   };
+  //   func();
+  // }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const url = `http://localhost:5000/api/auth/${id}`;
-      const url = `http://localhost:5000/api/users/indi/${slug}`;
-      const { data: res } = await axios.get(url, data);
+      const url = "http://localhost:5000/api/auth";
+      // const url = `http://localhost:5000/api/users/indi/${slug}`;
+      const { data: res } = await axios.post(url, data);
       localStorage.setItem("token", res.data);
-      localStorage.setItem("username", JSON.stringify(slug));
+      localStorage.setItem("username", JSON.stringify(data.slug));
       dispatch(
         setLogin({
-          slug: slug,
+          slug: data.slug,
           loggedIn: "fan",
         })
       );
       console.log(res.data + "res.data hai ye");
-      window.location = `/FanProfile/${slug}`;
+      window.location = `/FanProfile/${data.slug}`;
       // window.localStorage.setItem("isLoggedIn", true);
     } catch (error) {
       if (
@@ -178,7 +189,7 @@ const Login = () => {
           </span>
         </div>
         <div className="Auth-form-content">
-          <div className="form-group mt-3">
+          {/* <div className="form-group mt-3">
             <label>Username</label>
             <input
               type="text"
@@ -191,15 +202,15 @@ const Login = () => {
               required
               className="form-control mt-1"
             />
-          </div>
+          </div> */}
           <div className="form-group mt-3">
-            <label>Email address</label>
+            <label>Username</label>
             <input
-              type="email"
-              placeholder="Email"
-              name="email"
+              type="slug"
+              placeholder="slug"
+              name="slug"
               onChange={handleChange}
-              value={data.email}
+              value={data.slug}
               required
               className="form-control mt-1"
             />

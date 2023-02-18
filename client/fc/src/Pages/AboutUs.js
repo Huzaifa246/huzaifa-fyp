@@ -1,5 +1,6 @@
-import { React, Grid, about1, about2, about3 ,styled} from "./imports"
+import { Grid, about1, about2, about3, styled } from "./imports"
 import "./CSS/AboutUs.css";
+import React from "react";
 function AboutUs() {
   const aboutUs_data = [
     {

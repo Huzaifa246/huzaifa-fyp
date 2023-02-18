@@ -4,12 +4,11 @@ import Categories from "../Components/Dashboard-Slider";
 import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
-import { TextField } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useStateValue } from "../reducer/StateProvider";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import SearchResults from "./DashboardSearch";
 
 const TvIcons = React.memo(() => {
   const [data, setData] = useState([]);
@@ -323,89 +322,12 @@ const PrevArrow = (props) => {
   );
 };
 
-const Search = React.memo((props) => {
-  const [data, setData] = useState([]);
-
-  // return data.filter(data => {
-  //   return data.toLowerCase()
-  // })
-
-  useEffect(() => {
-    const func = async () => {
-      await axios.get("http://localhost:5000/api/celebs").then((resp) => {
-        return setData(resp.data.celebrities);
-      });
-    };
-    func();
-  }, []);
-
-  console.log(data.filter((celeb) => celeb.name === props));
-  console.log(props);
-
-  return (
-    <div>
-      <div className="section-header" style={{ marginTop: "50px" }}>
-        Found Results
-      </div>
-
-      {data
-        .filter((celeb) => celeb.name === props.celeb)
-        .map((celeb) => {
-          return (
-            <>
-              {/* slider */}
-
-              <Col style={{ paddingBottom: "10px" }}>
-                <div className="card" style={{ marginLeft: "50px" }}>
-                  <figure>
-                    <LazyLoadImage
-                      src={celeb.image}
-                      alt="Hotel"
-                      style={{ width: "400px", height: "250px" }}
-                    />
-                  </figure>
-
-                  <div className="card-body">
-                    {/* <h3 className="card-title">{celeb.name}</h3> */}
-                    <Link to={`/profile/view-as/${celeb.slug}`}>
-                      <h3 className="card-title">{celeb.name}</h3>
-                    </Link>
-                    <p className="card-text">{celeb.bio}</p>
-                  </div>
-                </div>
-              </Col>
-              {/* slider end */}
-            </>
-          );
-        })}
-    </div>
-  );
-});
-
 export default function Dashboard() {
-  // --- Search Bar
-  const [inputText, setInputText] = useState("");
-  let inputHandler = (e) => {
-    setInputText(e.target.value);
-  };
-  // -----------
 
   return (
     <>
       <Categories />
-      <div>
-        <TextField
-          type="text"
-          placeholder="Search..."
-          id="outlined-basic"
-          value={inputText}
-          onChange={inputHandler}
-          variant="outlined"
-          label="Search"
-        />
-        {/* <List input={inputText} /> */}
-      </div>
-      {inputText ? <Search celeb={inputText} /> : ""}
+      <SearchResults />
       <TvIcons />
       <FilmIcons />
       <Bloggers />

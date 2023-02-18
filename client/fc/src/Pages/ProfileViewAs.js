@@ -1,7 +1,6 @@
 // import { Link } from "react-router-dom";
 import "./CSS/Profileviewas.css";
 import Col from "react-bootstrap/Col";
-
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";

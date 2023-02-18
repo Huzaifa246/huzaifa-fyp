@@ -19,7 +19,7 @@ export default function UserMode() {
 
           <div className="d-grid gap-2 mt-3">
             {/* <Link to={"/celeb-signup-copy"}> */}
-            <Link to={"/celeb-signup"}>
+            <Link to={"/celeb-signup-copy"}>
               <Button type="submit" className="btn btn-primary">
                 Celebrity
               </Button>

@@ -1,69 +1,65 @@
 import React, { useContext, useState } from "react";
 import "./CSS/Login.css";
+import styles from "./CSS/fanLogin.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../App";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state/index";
 
-export default function Login({ props, currentUser, setCurrentUser }) {
-  const { state, dispatch } = useContext(UserContext);
-
-
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
+  const [data, setData] = useState({ slug: "", password: "" });
+  const [error, setError] = useState("");
   const [slug, setSlug] = useState("");
+  const dispatch = useDispatch();
+  const handleChange = ({ currentTarget: input }) => {
+    setData({ ...data, [input.name]: input.value });
+  };
 
-  const celebLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.get(`http://localhost:5000/api/celebs/indi/${slug}`, {
-      slug: slug,
-      email: email,
-      password: password,
-    })
-      .then((res) => {
-
-        if (res.data.celebrities.email === email) {
-          dispatch({ type: "USER", payload: true });
-          localStorage.setItem("userInfo", JSON.stringify(res.data.token));
-          localStorage.setItem("username", JSON.stringify(slug));
-          localStorage.setItem("email", JSON.stringify(email));
-          localStorage.setItem("password", JSON.stringify(password));
-          setCurrentUser(slug)
-          localStorage.setItem("LoggedIn", JSON.stringify("Celebrity"));
-          navigate(`/profile/${slug}`);
-        }
-        else {
-          toast.error("Invalid Login", {
-            position: "top-center",
-          });
-        }
-
-      })
-      .catch((err) => {
-        toast.error("Invalid Login", {
-          position: "top-center",
-        });
-      });
+    try {
+      const url = "http://localhost:5000/api/celeb-auth";
+      // const url = `http://localhost:5000/api/users/indi/${slug}`;
+      const { data: res } = await axios.post(url, data);
+      localStorage.setItem("token", res.data);
+      localStorage.setItem("username", JSON.stringify(data.slug));
+      dispatch(
+        setLogin({
+          slug: data.slug,
+          loggedIn: "celeb",
+        })
+      );
+      console.log(res.data + "res.data hai ye");
+      window.location = `/profile/${data.slug}`;
+      // window.localStorage.setItem("isLoggedIn", true);
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+      }
+    }
   };
 
   return (
     <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={celebLogin}>
+      <form className="Auth-form" onSubmit={handleSubmit}>
         <h3 className="Auth-form-title">Welcome back, Celebrity!</h3>
         <div className="text-center">
           Not yet registered?{" "}
           <span className="link-primary" style={{ color: "" }}>
             {/* onClick={changeAuthMode}> */}
-            <Link to={"/celeb-signup"}>Sign up</Link>
+            <Link to={"/celeb-signup-copy"}>Sign up</Link>
           </span>
         </div>
         <div className="Auth-form-content">
           {/* <h3 className="Auth-form-title">Sign In</h3> */}
-          <div className="form-group mt-3">
-
+          {/* <div className="form-group mt-3">
             <input
               type="text"
               className="form-control mt-1"
@@ -74,42 +70,42 @@ export default function Login({ props, currentUser, setCurrentUser }) {
                 setSlug(event.target.value);
               }}
             />
-          </div>
+          </div> */}
           <div className="form-group mt-3">
+            <label>Username</label>
             <input
-              type="email"
-              className="form-control mt-1"
-              placeholder="Enter email"
-              name="email"
+              type="slug"
+              placeholder="slug"
+              name="slug"
+              onChange={handleChange}
+              value={data.slug}
               required
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
+              className="form-control mt-1"
             />
           </div>
           <div className="form-group mt-3">
-
+            <label>Password</label>
             <input
               type="password"
-              className="form-control mt-1"
-              placeholder="Enter password"
+              placeholder="Password"
               name="password"
+              onChange={handleChange}
+              value={data.password}
               required
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
+              className="form-control mt-1"
             />
           </div>
           <div className="d-grid gap-2 mt-3">
+            {error && <div className={styles.error_msg}>{error}</div>}
             <button type="submit" className="btn btn-primary">
               Login
             </button>
           </div>
           <p className="forgot-password text-right mt-2">
-            <Link to="/forgot-passwordCeleb">Forgot password? </Link>
+            <Link to="/celeb-forgot-password">Forgot password? </Link>
           </p>
         </div>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </form>
     </div>
   );

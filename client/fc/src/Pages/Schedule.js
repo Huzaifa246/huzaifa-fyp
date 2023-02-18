@@ -60,6 +60,59 @@ const Meetings = React.memo((props) => {
   );
 })
 
+const CelebMeeting = React.memo((props) => {
+  const [data, setData] = useState([]);
+  const slug = useSelector((state) => state.slug);
+  const meeting = useSelector((state) => state.meeting);
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/celebs/indi/${slug}`)
+      .then(response => {
+        setData(response.data.celebrities.meeting)
+      })
+      .catch(error => {
+        console.log(error, "Api error")
+      });
+  }, []);
+
+  const filteredData = data.filter(celeb => celeb)
+
+  return (
+    <>
+      <div className="section-header" style={{ marginTop: "50px" }}>
+        Meetings
+      </div>
+      {filteredData.map((celeb) => {
+        return (
+          <>
+
+            <Col style={{ paddingBottom: "10px" }}>
+              <div className='bookedMeeting'>
+
+                <div className='bookedMeeting__title'>
+                  <strong >
+                    users : {celeb._id}
+                    <br />
+                  </strong>
+                </div>
+                <div className='bookedMeeting__time'>
+                  <strong>{celeb.date}</strong>
+                  <strong>{celeb.time}</strong>
+                  <strong>{meeting.name}</strong>
+                  {/* <strong>{users.cost}</strong> */}
+                </div>
+                <a href="http://localhost:5000/createMeeting" target="_blank" rel="noopener noreferrer">
+                  <button>Join Meeting</button>
+                </a>
+              </div>
+            </Col>
+          </>
+        );
+      })};
+
+    </>
+  );
+})
 function Schedule(props) {
   const loggedIn = useSelector((state) => state.loggedIn);
 
@@ -67,8 +120,7 @@ function Schedule(props) {
     return (
       <div className="schedule">
         <div className="schedule__row">
-          {/* <Meetings message="Join Meeting"/> */}
-          <Meetings meetingList={props.FanSlug} />
+          <Meetings />
         </div>
       </div>
     );
@@ -76,8 +128,8 @@ function Schedule(props) {
   return (
     <div className="schedule">
       <div className="schedule__row">
-        {/* <Meetings message="Join Meeting"/> */}
         <h1>Celeb Schedule</h1>
+        <CelebMeeting />
       </div>
     </div>
   );

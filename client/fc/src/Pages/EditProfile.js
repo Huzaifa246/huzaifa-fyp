@@ -87,29 +87,27 @@ function EditProfile({ currentId, setCurrentId }) {
   }
   const updateUser = async (e) => {
     // formData for image
-    let formData = new FormData();
-    const items = { name, bio, category, image };
-    formData.append('image', updateImage)
-    console.log("imageForm", formData.get('image'))
-    // image: e.target.files,
     axios.put(`http://localhost:5000/api/celebs/editProfile/${id}`, {
       name: name,
       bio: bio,
       category: category
     });
     // image only
-    axios.put(`http://localhost:5000/api/celebs/image/${id}`, {
-      image: updateImage,
-    },
-      // multer for formData used for image
-      { headers: { 'Content-type': 'multipart/form-data' } }).then((res) => {
-        console.log("response", res);
-        setImage(res.data.image);
-      }).catch((error) => {
-        console.error(error)
+    try {
+      const formData = new FormData();
+      formData.append('image', updateImage);
+      const response = await axios.put(`http://localhost:5000/api/celebs/${id}`, formData, {
+        image: updateImage,
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-    setOpen(false);
+
+      setImage(response.data.image);
+      setOpen(false);
+    } catch (error) {
+      console.error(error.message, "ERROR OCCURED");
+    }
   };
+
 
   return (
     <div className="user">
@@ -127,7 +125,7 @@ function EditProfile({ currentId, setCurrentId }) {
                   type="text"
                   placeholder={id}
                   className="userUpdateInput"
-                  value={id}
+                // value={id}
                 />
               </div>
               <div className="userUpdateItem">
@@ -176,8 +174,6 @@ function EditProfile({ currentId, setCurrentId }) {
                 <img className="userUpdateImg" src={celeb.image} alt='' />
                 <input type="file" name="image"
                   onChange={(e) => {
-                    // console.log(updateImage)
-                    // console.log(e.target.files)
                     setUpdateImage(e.target.files[0])
                   }}
                 />

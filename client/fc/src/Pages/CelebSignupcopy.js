@@ -5,8 +5,8 @@ import styles from "./CSS/fansup.css";
 
 const Signup = () => {
 	const [data, setData] = useState({
-		firstName: "",
-		lastName: "",
+		name: "",
+		slug: "",
 		email: "",
 		password: "",
 	});
@@ -20,7 +20,7 @@ const Signup = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const url = "http://localhost:5000/api/cusers";
+			const url = "http://localhost:5000/api/celebs";
 			const { data: res } = await axios.post(url, data);
 			setMsg(res.message);
 		} catch (error) {
@@ -36,32 +36,32 @@ const Signup = () => {
 
 	return (
 		<div className="Auth-form-container">
-      <form onSubmit={handleSubmit} className="Auth-form">
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Hello Star,</h3>
-          <p className="Auth-form-title">Sign Up to connect with your fans</p>
-          <div className="text-center">
-            Already registered?{" "}
-            <span className="link-primary">
-              <Link to={"/celeb-login-copy"}>Login</Link>
-            </span>
-          </div>
-          <div className="form-group mt-3">
+			<form onSubmit={handleSubmit} className="Auth-form">
+				<div className="Auth-form-content">
+					<h3 className="Auth-form-title">Hello Star,</h3>
+					<p className="Auth-form-title">Sign Up to connect with your fans</p>
+					<div className="text-center">
+						Already registered?{" "}
+						<span className="link-primary">
+							<Link to={"/celeb-login"}>Login</Link>
+						</span>
+					</div>
+					<div className="form-group mt-3">
 						<input
 							type="text"
-							placeholder="First Name"
-							name="firstName"
+							placeholder="Full Name"
+							name="name"
 							onChange={handleChange}
-							value={data.firstName}
+							value={data.name}
 							required
 							className="form-control mt-1"
 						/>
 						<input
 							type="text"
-							placeholder="Last Name"
-							name="lastName"
+							placeholder="slug"
+							name="slug"
 							onChange={handleChange}
-							value={data.lastName}
+							value={data.slug}
 							required
 							className="form-control mt-1"
 						/>
@@ -86,15 +86,20 @@ const Signup = () => {
 						{error && <div className={styles.error_msg}>{error}</div>}
 						{msg && <div className={styles.success_msg}>{msg}</div>}
 						<button
-              			type="submit"
-              			className="btn btn-primary"
-              			style={{width:"220px", marginLeft:"55px", marginTop:"10px", marginBottom:"10px"}}
-            			>
-             			 Create Account
-           				</button>
-				  </div>
-			  </div>
-      </form>
+							type="submit"
+							className="btn btn-primary"
+							style={{
+								width: "220px",
+								marginLeft: "55px",
+								marginTop: "10px",
+								marginBottom: "10px",
+							}}
+						>
+							Create Account
+						</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	);
 };

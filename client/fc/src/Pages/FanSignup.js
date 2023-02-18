@@ -125,7 +125,7 @@ import styles from "./CSS/fansup.css";
 
 const Signup = () => {
   const [data, setData] = useState({
-    fullName: "",
+    name: "",
     slug: "",
     email: "",
     password: "",
@@ -172,7 +172,7 @@ const Signup = () => {
               placeholder="Full Name"
               name="fullName"
               onChange={handleChange}
-              value={data.fullName}
+              value={data.name}
               required
               className="form-control mt-1"
             />

@@ -54,7 +54,8 @@ const Meetings = React.memo(() => {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.preventDefault();
     setOpen(false);
   };
 
@@ -68,7 +69,6 @@ const Meetings = React.memo(() => {
     setOpen(false)
   };
 
-
   return (
     <>
       <div className="section-header" style={{ marginTop: "50px" }}>
@@ -77,8 +77,6 @@ const Meetings = React.memo(() => {
       {data.map((meeting) => {
         return (
           <>
-            {/* slider */}
-
             <Col className="meeting__column" style={{ paddingBottom: "10px" }}>
               <div className="bookedMeeting">
                 <div className="bookedMeeting__title">
@@ -91,8 +89,7 @@ const Meetings = React.memo(() => {
                   <strong>Time : {meeting.time}</strong>
                   <strong>Date : {meeting.date}</strong>
                 </div>
-                {/* //onClick={() => handleDelete()} */}
-                <Button onClick={handleOpen}>
+                <Button onClick={handleOpen} style={{ color: "#c0c0c0" }}>
                   Delete Session
                 </Button>
                 <Dialog
@@ -102,7 +99,7 @@ const Meetings = React.memo(() => {
                   aria-describedby="alert-dialog-description"
                 >
                   <DialogTitle id="alert-dialog-title">
-                    {"UPDATE PROFILE?"}
+                    {"DELETE SESSION?"}
                   </DialogTitle>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -110,15 +107,14 @@ const Meetings = React.memo(() => {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} >Disagree</Button>
-                    <Button onClick={() => handleDelete(meeting._id)} style={{ color: "red" }}>
+                    <Button onClick={handleClose} style={{ backgroundColor: "#008000", color: "white" }}>Disagree</Button>
+                    <Button onClick={() => handleDelete(meeting._id)} variant="contained" style={{ backgroundColor: "red", color: "white" }}>
                       Delete Session
                     </Button>
                   </DialogActions>
                 </Dialog>
               </div>
             </Col>
-            {/* slider end */}
           </>
         );
       })}

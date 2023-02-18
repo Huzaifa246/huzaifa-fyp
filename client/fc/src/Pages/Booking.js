@@ -1,10 +1,11 @@
 import { useEffect, useReducer, useState } from "react";
 import "./CSS/Booking.css";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
+import styles from "./CSS/fanLogin.css";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
+
 
 export default function Booking() {
   const reducer = (state, action) => {
@@ -29,7 +30,7 @@ export default function Booking() {
   const [message, setMessage] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  // const [name, setName] = useState("");
+  const [errors, setErrors] = useState("");
 
 
   const [{ loading, error, celebs }, dispatch] = useReducer(reducer, {
@@ -73,16 +74,22 @@ export default function Booking() {
     time: time,
   };
 
-  const updateUser = async (e) => {
-
-    console.log("Name meeting", celeb.name);
-    axios.put(`http://localhost:5000/api/celebs/${id}`, new_meeting)
-
-    alert("meeting added");
-
-  };
-  function myFunction(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      axios.put(`http://localhost:5000/api/celebs/${id}`, new_meeting)
+      toast.success("Session Booked", {
+        position: "top-center",
+      });
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setErrors(error.response.data.message);
+      }
+    }
   }
 
   return (
@@ -95,7 +102,7 @@ export default function Booking() {
                 <div className="form-header">
                   <h1>Make your Meeting Session</h1>
                 </div>
-                <form onsubmit={myFunction}>
+                <form onsubmit={handleSubmit}>
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
@@ -204,12 +211,10 @@ export default function Booking() {
                         <span className="form-label">Time</span>
                       </div>
                     </div>
-                    {/* time end */}
                   </div>
-
-
                   <div className="form-btn">
-                    <button className="submit-btn" onClick={updateUser}>
+                    {errors && <div className={styles.error_msg}>{errors}</div>}
+                    <button className="submit-btn" onClick={handleSubmit}>
                       Post Meeting
                     </button>
                   </div>

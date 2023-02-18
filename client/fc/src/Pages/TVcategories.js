@@ -1,4 +1,5 @@
-import { React, Card, CardContent, CardMedia, Typography, Grid } from "./imports";
+import { Card, CardContent, CardMedia, Typography, Grid } from "./imports";
+import React from "react";
 import { useEffect, useState } from "react"
 import axios from "axios";
 

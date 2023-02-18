@@ -35,15 +35,18 @@ import ForgotPasswordCeleb from './Components/ForgotPasswordCeleb/index';
 import CelebLoginCopy from './Pages/CelebLoginCopy';
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
 
+import EmailVerifyCeleb from './Components/EmailVerifyCeleb/index';
+import PasswordResetCeleb from './Components/PasswordResetCeleb';
+
 import Meet from './Components/Meeting/Meet';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
-
   const [state, dispatch] = useReducer(reducer, initialState)
   const [currentId, setCurrentId] = useState(null)
   const [currentUser, setCurrentUser] = useState("")
   const [fanProps, setFanProps] = useState(null)
+
   return (
 
     <BrowserRouter>
@@ -54,7 +57,6 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/Meet" element={<Meet />} />
 
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
             <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
@@ -85,8 +87,21 @@ function App() {
             <Route path="/filmcategories" element={<Filmcategories />} />
 
             <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
+            <Route
+              path="/celebs/:id/verify/:token"
+              element={<EmailVerifyCeleb />}
+            />
+
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route
+              path="/celeb-forgot-password"
+              element={<ForgotPasswordCeleb />}
+            />
             <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+            <Route
+              path="/celeb-password-reset/:id/:token"
+              element={<PasswordResetCeleb />}
+            />
 
             <Route path="/forgot-passwordCeleb" element={<ForgotPasswordCeleb />} />
             <Route
@@ -94,9 +109,9 @@ function App() {
               element={<Bloggerscategories />}
             />
             <Route path="/ytcategories" element={<YTcategories />} />
-          </Routes>
-          <Footer />
 
+            <Route path="/Meet" element={<Meet />} />
+          </Routes>
         </UserContext.Provider>
       </div>
     </BrowserRouter>
