@@ -17,7 +17,6 @@
 img {
   width: 100%;
   height: auto;
-  /* border-radius:10px 10px 0 0; */
 }
 
 .section-header {
@@ -32,9 +31,6 @@ img {
   margin-left: 60px;
 }
 
-/* .classItems {
-  display: flex;
-} */
 .main {
   display: flex;
   height: 100vh;
