@@ -75,7 +75,7 @@ export default function Login() {
             <label>Username</label>
             <input
               type="slug"
-              placeholder="slug"
+              placeholder="Username"
               name="slug"
               onChange={handleChange}
               value={data.slug}

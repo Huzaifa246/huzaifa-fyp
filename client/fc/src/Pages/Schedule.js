@@ -2,32 +2,39 @@ import "./CSS/Schedule.css"
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMeeting } from "../state/index";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 const Meetings = React.memo((props) => {
   const [data, setData] = useState([]);
   const slug = useSelector((state) => state.slug);
   const meeting = useSelector((state) => state.meeting);
 
+  const handleJoinMeeting = (meeting) => {
+    window.location.href = `https://fanclub.onrender.com/${meeting}`;
+  }
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/users/indi/${slug}`)
+    axios.get(`http://localhost:5000/api/celebs/meeting/${slug}`)
       .then(response => {
-        setData(response.data.users.booked_meetings)
-        console.log(response.data.users.booked_meetings)
+        setData(response.data.data)
+        console.log(response.data)
       })
       .catch(error => {
         console.log(error, "Api error")
       });
   }, []);
 
-  const filteredData = data.filter(users => users)
+  // const filteredData = data.filter(users => users)
 
   return (
     <>
       <div className="section-header" style={{ marginTop: "50px" }}>
-        Meetings
+        Booked Meetings
       </div>
-      {filteredData.map((users) => {
+      {data.map((users) => {
         return (
           <>
 
@@ -36,20 +43,20 @@ const Meetings = React.memo((props) => {
 
                 <div className='bookedMeeting__title'>
                   <strong >
-                    users : {users._id}
+                    meeting id : {users._id}
                     <br />
-                    {/* {users.name} */}
+                    <strong>{users.name}</strong>
+                    <br />
                   </strong>
                 </div>
                 <div className='bookedMeeting__time'>
                   <strong>{users.date}</strong>
                   <strong>{users.time}</strong>
-                  <strong>{meeting.name}</strong>
                   {/* <strong>{users.cost}</strong> */}
                 </div>
-                <a href="http://localhost:5000/createMeeting" target="_blank" rel="noopener noreferrer">
-                  <button>Join Meeting</button>
-                </a>
+                <button onClick={() => handleJoinMeeting(users._id)}>
+                  Join Meeting
+                </button>
               </div>
             </Col>
           </>
@@ -60,59 +67,61 @@ const Meetings = React.memo((props) => {
   );
 })
 
-const CelebMeeting = React.memo((props) => {
-  const [data, setData] = useState([]);
-  const slug = useSelector((state) => state.slug);
-  const meeting = useSelector((state) => state.meeting);
+const CelebMeetings = React.memo(() => {
+  const [celebData, setCelebData] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const loggedIn = useSelector((state) => state.loggedIn);
+  const celebSlug = useSelector((state) => state.slug);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/celebs/indi/${slug}`)
-      .then(response => {
-        setData(response.data.celebrities.meeting)
-      })
-      .catch(error => {
-        console.log(error, "Api error")
-      });
+    const func = async () => {
+      await axios
+        .get(`http://localhost:5000/api/celebs/indi/${celebSlug}`)
+        .then((resp) => {
+          return setCelebData(resp.data.celebrities.meeting);
+        });
+    };
+    func();
   }, []);
 
-  const filteredData = data.filter(celeb => celeb)
-
+  const handleJoinMeeting = (meeting) => {
+    window.location.href = `https://fanclub.onrender.com/${meeting}`;
+  }
   return (
     <>
       <div className="section-header" style={{ marginTop: "50px" }}>
-        Meetings
+        Booked Meetings
       </div>
-      {filteredData.map((celeb) => {
+      {celebData.filter(meeting => meeting.fanSlug !== null).map((meeting) => {
         return (
           <>
 
-            <Col style={{ paddingBottom: "10px" }}>
-              <div className='bookedMeeting'>
-
-                <div className='bookedMeeting__title'>
-                  <strong >
-                    users : {celeb._id}
-                    <br />
-                  </strong>
+            <Col className="meeting__column" style={{ paddingBottom: "10px" }}>
+              <div className="bookedMeeting">
+                <div className="bookedMeeting__title">
+                  <strong>Meeting ID : {meeting._id}</strong>
                 </div>
-                <div className='bookedMeeting__time'>
-                  <strong>{celeb.date}</strong>
-                  <strong>{celeb.time}</strong>
-                  <strong>{meeting.name}</strong>
-                  {/* <strong>{users.cost}</strong> */}
+                <div className="bookedMeeting__title">
+                  <strong>Cost : {meeting.total_cost}</strong>
                 </div>
-                <a href="http://localhost:5000/createMeeting" target="_blank" rel="noopener noreferrer">
-                  <button>Join Meeting</button>
-                </a>
+                <div className="bookedMeeting__time">
+                  <strong>Time : {meeting.time}</strong>
+                  <strong>Date : {meeting.date}</strong>
+                </div>
+                <button onClick={() => handleJoinMeeting(meeting._id)}>
+                  Join Meeting
+                </button>
               </div>
             </Col>
+            <ToastContainer />
           </>
         );
-      })};
-
+      })}
+      ;
     </>
   );
-})
+});
 function Schedule(props) {
   const loggedIn = useSelector((state) => state.loggedIn);
 
@@ -128,8 +137,7 @@ function Schedule(props) {
   return (
     <div className="schedule">
       <div className="schedule__row">
-        <h1>Celeb Schedule</h1>
-        <CelebMeeting />
+        <CelebMeetings />
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ export default function Navbar() {
                 <Link to={"/tvcategories"}>Tv Artist</Link>
                 <Link to={"/filmcategories"}>Film Icons </Link>
                 <Link to={"/bloggerscategories"}>Bloggers</Link>
-                <Link to={"/ytcategories"}>Yotubers</Link>
+                <Link to={"/ytcategories"}>Youtubers</Link>
               </div>
             </div>
             {/* <li>
@@ -67,7 +67,7 @@ export default function Navbar() {
             </li>
 
             <li onClick={clear_user}>
-              <Link to={"/signup-usermode"} className="btn btn-hover">
+              <Link to={"/login-usermode"} className="btn btn-hover">
                 <span>Log out</span>
               </Link>
             </li>
@@ -101,7 +101,7 @@ export default function Navbar() {
             </li>
 
             <li onClick={clear_user}>
-              <Link to={"/signup-usermode"} className="btn btn-hover">
+              <Link to={"/login-usermode"} className="btn btn-hover">
                 <span>Log out</span>
               </Link>
             </li>
@@ -131,7 +131,7 @@ export default function Navbar() {
           </li>
 
           <li>
-            <Link to={"/signup-usermode"} className="btn btn-hover">
+            <Link to={"/login-usermode"} className="btn btn-hover">
               <span>Log in</span>
             </Link>
           </li>

@@ -96,7 +96,7 @@ function EditProfile({ currentId, setCurrentId }) {
     try {
       const formData = new FormData();
       formData.append('image', updateImage);
-      const response = await axios.put(`http://localhost:5000/api/celebs/${id}`, formData, {
+      const response = await axios.put(`http://localhost:5000/api/celebs/image/${id}`, formData, {
         image: updateImage,
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -106,6 +106,7 @@ function EditProfile({ currentId, setCurrentId }) {
     } catch (error) {
       console.error(error.message, "ERROR OCCURED");
     }
+    setOpen(false);
   };
 
 

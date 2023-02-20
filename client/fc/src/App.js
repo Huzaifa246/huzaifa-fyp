@@ -32,7 +32,6 @@ import PasswordReset from "./Components/PasswordReset";
 import StripeContainer from "./Components/StripeContainer";
 import FanProfile from './Pages/FanProfile';
 import ForgotPasswordCeleb from './Components/ForgotPasswordCeleb/index';
-import CelebLoginCopy from './Pages/CelebLoginCopy';
 import CelebSignupcopy from "./Pages/CelebSignupcopy";
 
 import EmailVerifyCeleb from './Components/EmailVerifyCeleb/index';
@@ -59,14 +58,13 @@ function App() {
             <Route path="/" element={<Dashboard />} />
 
             <Route path="/celeb-signup-copy" element={<CelebSignupcopy />} />
-            <Route path="/celeb-login-copy" element={<CelebLoginCopy />} />
             <Route path="/payment" element={<StripeContainer />} />
             <Route path="/fan-schedule" element={<Schedule msg="join meeting" />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/about-us" element={<AboutUs />} />
 
-            <Route path="/signup-usermode" element={<SignupUserMode />} />
             <Route path="/login-usermode" element={<LoginUserMode />} />
+            <Route path="/signup-usermode" element={<SignupUserMode />} />
 
             <Route path="/celeb-login" element={<CelebLogin setCurrentUser={setCurrentUser} />} />
             <Route path="/fan-login" element={<FanLogin setCurrentUser={setCurrentUser} setFanProps={setFanProps} />} />
@@ -112,6 +110,7 @@ function App() {
 
             <Route path="/Meet" element={<Meet />} />
           </Routes>
+          <Footer />
         </UserContext.Provider>
       </div>
     </BrowserRouter>

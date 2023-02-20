@@ -42,16 +42,14 @@ function FanEditProfile({ currentId, setCurrentId }) {
   });
   //-------------Open ----- 
   const [open, setOpen] = React.useState(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
   };
   // -----------------Close
-  const [celeb, setCeleb] = useState({});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,12 +60,11 @@ function FanEditProfile({ currentId, setCurrentId }) {
         const result = await axios
           .get(`http://localhost:5000/api/users/indi/${slug}`)
           .then((resp) => {
-            setCeleb(resp.data.users);
+            setUser(resp.data.users);
             setName(resp.data.users.name);
             setBio(resp.data.users.bio);
             setImage(resp.data.users.image);
             setId(resp.data.users._id);
-
           });
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
@@ -84,28 +81,25 @@ function FanEditProfile({ currentId, setCurrentId }) {
 
   }
   const updateUser = async (e) => {
-    // formData for image
-    let formData = new FormData();
-    const items = { name, bio, image };
-    formData.append('image', updateImage)
-    console.log("imageForm", formData.get('image'))
-    // image: e.target.files,
     axios.put(`http://localhost:5000/api/users/${id}`, {
       name: name,
       bio: bio,
     });
     // image only
-    axios.put(`http://localhost:5000/api/users/image/${id}`, {
-      image: updateImage,
-    },
-      // multer for formData used for image
-      { headers: { 'Content-type': 'multipart/form-data' } }).then((res) => {
-        console.log("response", res);
-        setImage(res.data.image);
-      }).catch((error) => {
-        console.error(error)
+    try {
+      const formData = new FormData();
+      formData.append('image', updateImage);
+      const response = await axios.put(`http://localhost:5000/api/users/image/${id}`, formData, {
+        image: updateImage,
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-    setOpen(true);
+
+      setImage(response.data.image);
+      setOpen(false);
+    } catch (error) {
+      console.error(error.message, "ERROR OCCURED");
+    }
+    setOpen(false);
   };
 
   return (
@@ -130,10 +124,9 @@ function FanEditProfile({ currentId, setCurrentId }) {
               <div className="userUpdateItem">
                 <h1>{currentId}</h1>
                 <label style={{ color: "black" }}>Full Name</label>
-
                 <input
                   type="text"
-                  placeholder={celeb.name}
+                  placeholder={user.name}
                   className="userUpdateInput"
                   value={name}
                   onChange={(e) => {
@@ -147,7 +140,7 @@ function FanEditProfile({ currentId, setCurrentId }) {
                 <input
                   type="text"
                   size="50"
-                  placeholder={celeb.bio}
+                  placeholder={user.bio}
                   className="userUpdateInput"
                   value={bio}
                   onChange={(e) => {
@@ -159,16 +152,14 @@ function FanEditProfile({ currentId, setCurrentId }) {
             </div>
             <div className="userUpdateRight">
               <div className="userUpdateUpload">
-                <img className="userUpdateImg" src={celeb.image} alt='' />
+                <img className="userUpdateImg" src={user.image} alt='' />
                 <input type="file" name="image"
                   onChange={(e) => {
-                    // console.log(updateImage)
-                    // console.log(e.target.files)
                     setUpdateImage(e.target.files[0])
                   }}
                 />
               </div>
-              <Button className="userUpdateButton" onClick={updateUser} color="error" variant="contained">
+              <Button className="userUpdateButton" onClick={handleOpen} color="error" variant="contained">
                 Update
               </Button>
               <Dialog
@@ -187,7 +178,7 @@ function FanEditProfile({ currentId, setCurrentId }) {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="error" variant="contained">Disagree</Button>
-                  <Button onClick={handleClose} autoFocus color="success" variant="contained">
+                  <Button onClick={updateUser} autoFocus color="success" variant="contained">
                     Agree
                   </Button>
                 </DialogActions>

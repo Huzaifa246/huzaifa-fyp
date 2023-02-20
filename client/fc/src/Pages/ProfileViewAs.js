@@ -2,20 +2,21 @@
 import "./CSS/Profileviewas.css";
 import Col from "react-bootstrap/Col";
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { setMeeting } from "../state/index";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 const Meetings = React.memo(() => {
   const params = useParams();
   const { slug } = params;
   const [data, setData] = useState([]);
-  //const [{ user }, dispatch] = useStateValue();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loggedIn = useSelector((state) => state.loggedIn);
+
   useEffect(() => {
     const func = async () => {
       await axios
@@ -28,12 +29,19 @@ const Meetings = React.memo(() => {
   }, []);
 
   const handleBookMeeting = (meetingDetails) => {
-    dispatch(
-      setMeeting({
-        meeting: meetingDetails,
-      })
-    );
-    navigate(`/payment`);
+    if (loggedIn === "fan") {
+      dispatch(
+        setMeeting({
+          meeting: meetingDetails,
+        })
+      );
+      navigate(`/payment`);
+    }
+    else {
+      toast.error("Log in with fan account to book session", {
+        position: "top-center",
+      });
+    }
   };
 
   return (
@@ -41,10 +49,9 @@ const Meetings = React.memo(() => {
       <div className="section-header" style={{ marginTop: "50px" }}>
         Meetings
       </div>
-      {data.map((meeting) => {
+      {data.filter(meeting => meeting.fanSlug === null).map((meeting) => {
         return (
           <>
-            {/* slider */}
 
             <Col className="meeting__column" style={{ paddingBottom: "10px" }}>
               <div className="bookedMeeting">
@@ -59,12 +66,11 @@ const Meetings = React.memo(() => {
                   <strong>Date : {meeting.date}</strong>
                 </div>
                 <button onClick={() => handleBookMeeting(meeting)}>
-                  {" "}
                   Book Meeting
                 </button>
               </div>
             </Col>
-            {/* slider end */}
+            <ToastContainer />
           </>
         );
       })}

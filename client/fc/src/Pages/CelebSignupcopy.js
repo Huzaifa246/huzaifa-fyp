@@ -9,6 +9,9 @@ const Signup = () => {
 		slug: "",
 		email: "",
 		password: "",
+		bio: "",
+		category: "",
+		bankDetails: "",
 	});
 	const [error, setError] = useState("");
 	const [msg, setMsg] = useState("");
@@ -58,10 +61,28 @@ const Signup = () => {
 						/>
 						<input
 							type="text"
-							placeholder="slug"
+							placeholder="Username"
 							name="slug"
 							onChange={handleChange}
 							value={data.slug}
+							required
+							className="form-control mt-1"
+						/>
+						<input
+							type="bio"
+							placeholder="Bio"
+							name="bio"
+							onChange={handleChange}
+							value={data.bio}
+							required
+							className="form-control mt-1"
+						/>
+						<input
+							type="bankDetails"
+							placeholder="Bank IBAN Number"
+							name="bankDetails"
+							onChange={handleChange}
+							value={data.bankDetails}
 							required
 							className="form-control mt-1"
 						/>
@@ -83,6 +104,22 @@ const Signup = () => {
 							required
 							className="form-control mt-1"
 						/>
+
+						<select
+							className="form-control"
+							required
+							name="category"
+							value={data.category}
+							onChange={handleChange}
+						>
+							<option value="" selected hidden>
+								Select Category
+							</option>
+							<option value="tv">tv</option>
+							<option value="film">film</option>
+							<option value="blogger">blogger</option>
+							<option value="youtuber">youtuber</option>
+						</select>
 						{error && <div className={styles.error_msg}>{error}</div>}
 						{msg && <div className={styles.success_msg}>{msg}</div>}
 						<button

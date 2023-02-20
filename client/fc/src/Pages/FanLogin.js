@@ -189,25 +189,11 @@ const Login = () => {
           </span>
         </div>
         <div className="Auth-form-content">
-          {/* <div className="form-group mt-3">
-            <label>Username</label>
-            <input
-              type="text"
-              placeholder="username"
-              name="slug"
-              onChange={(event) => {
-                setSlug(event.target.value);
-              }}
-              value={slug}
-              required
-              className="form-control mt-1"
-            />
-          </div> */}
           <div className="form-group mt-3">
             <label>Username</label>
             <input
               type="slug"
-              placeholder="slug"
+              placeholder="Username"
               name="slug"
               onChange={handleChange}
               value={data.slug}

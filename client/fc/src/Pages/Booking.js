@@ -1,7 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
-import "./CSS/Booking.css";
+import styles from "./CSS/Booking.css";
 import axios from "axios";
-import styles from "./CSS/fanLogin.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
@@ -30,6 +29,7 @@ export default function Booking() {
   const [message, setMessage] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [fanSlug, setFanSlug] = useState("");
   const [errors, setErrors] = useState("");
 
 
@@ -67,11 +67,13 @@ export default function Booking() {
 
   const new_meeting = {
     name: celeb.name,
+    slug: celeb.slug,
     total_cost: total_cost,
     total_members: total_members,
     message: message,
     date: date,
     time: time,
+    fanSlug: fanSlug,
   };
 
   const handleSubmit = async (e) => {
@@ -102,7 +104,7 @@ export default function Booking() {
                 <div className="form-header">
                   <h1>Make your Meeting Session</h1>
                 </div>
-                <form onsubmit={handleSubmit}>
+                <form>
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
@@ -110,7 +112,7 @@ export default function Booking() {
                           className="form-control"
                           value={celeb.name}
                           type="text"
-                          name="slug"
+                          name="name"
                           required
                         />
                         <span className="form-label">Name</span>
@@ -160,8 +162,6 @@ export default function Booking() {
                             No of Members
                           </option>
                           <option value="1">1</option>
-                          <option value="5">5</option>
-                          <option value="10">10</option>
                         </select>
                       </div>
                     </div>

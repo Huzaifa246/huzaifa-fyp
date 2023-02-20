@@ -1,5 +1,6 @@
-import { React, Card, CardContent, CardMedia, Typography, Grid } from "./imports";
+import { Card, CardContent, CardMedia, Typography, Grid } from "./imports";
 import { useEffect, useState } from "react"
+import React from "react";
 import axios from "axios";
 
 export default function CategoriesCard() {

@@ -1,7 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useRef, useState } from "react";
-import { useStateValue } from "../reducer/StateProvider";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useSelector } from "react-redux";
@@ -30,13 +29,9 @@ export default function PaymentForm() {
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
-  //const [{meetid}, dispatch] = useStateValue();
-  // const meetid = useSelector((state) => state.meetid);
-  // const meetcost = useSelector((state) => state.meetcost);
   const meeting = useSelector((state) => state.meeting);
   const date = useSelector((state) => state.meeting.date);
   const time = useSelector((state) => state.meeting.time);
-  // const total_cost = useSelector((state) => state.meeting.total_cost);
   const slug = useSelector((state) => state.slug);
   const object = useSelector((state) => state);
   const [fanID, setFanID] = useState("");
@@ -73,8 +68,9 @@ export default function PaymentForm() {
           id,
         });
 
-        if (response.data.success) {
-          console.log("Successful payment");
+        const responseFSlug = await axios.put(`http://localhost:5000/api/celebs/${meeting.slug}/meet/${meeting._id}/${slug}`)
+        if (response.data.success && responseFSlug.data.success) {
+          console.log("Successful payment and updated booked");
           setSuccess(true);
         }
       } catch (error) {
@@ -100,10 +96,12 @@ export default function PaymentForm() {
         {!success ? (
           <form onSubmit={handleSubmit}>
             <h3 className="Auth-form-title">Payment Details </h3>
-            <p>Slug: {slug}</p>
-            <p>Meet ID: {meeting._id}</p>
-            <p>Meet Cost: {meeting.total_cost}</p>
-            <p>Full Name: {meeting.name}</p>
+            <div>
+              <p><strong>Full Name: {meeting.name}</strong></p>
+              <p><strong>Time: {meeting.time}</strong></p>
+              <p><strong>Date: {meeting.date}</strong> </p>
+              <p><strong>Meet Cost: {meeting.total_cost}</strong ></p>
+            </div>
             <div className="form-group mt-3">
               <label style={{ color: "black" }}>Full Name</label>
               <input
@@ -178,8 +176,9 @@ export default function PaymentForm() {
               <Button color="secondary" onClick={book_session}> Go to Schedule </Button>
             </Link>
           </div>
-        )}
-      </div>
+        )
+        }
+      </div >
     </>
   );
 }

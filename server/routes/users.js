@@ -139,7 +139,16 @@ router.put("/:id", (req, res) => {
 				email: req.body.email,
 				password: req.body.password,
 				bio: req.body.bio,
-			}
+			},
+			$push: {
+				booked_meetings: [
+					{
+						celeb_name: req.body.celeb_name,
+						date: req.body.date,
+						time: req.body.time,
+					},
+				],
+			},
 		}
 	)
 		.then((result) => {

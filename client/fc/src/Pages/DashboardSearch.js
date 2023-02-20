@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { TextField } from "@mui/material";
+import { TextField, InputAdornment } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "./CSS/Dashboard.css";
+import { Search as SearchIcon } from '@material-ui/icons';
+
 
 const SearchResults = () => {
     const [data, setData] = useState([]);
@@ -31,16 +33,25 @@ const SearchResults = () => {
     return (
         <div>
             <TextField
-                style={{ marginLeft: "10px", width: "30%" }}
+                style={{ margin: "15px", width: "100%", alignItems: "center", justifyContent: "center", display: "flex" }}
                 type="text"
-                placeholder="Search for a celebrity"
+                placeholder="Search celebrity"
                 value={searchTerm}
+                color="error" focused
                 onChange={(e) => setSearchTerm(e.target.value)}
+                variant="outlined"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                }}
             />
 
             {searchTerm.length > 0 && (
                 <>
-                    <div className="section-header" style={{ marginTop: "50px" }}>
+                    <div className="section-header" style={{ marginTop: "30px" }}>
                         Found Results
                     </div>
                     <Row style={{ marginTop: "50px" }}>
