@@ -377,6 +377,7 @@ celebRouter.put("/editProfile/:id", (req, res) => {
         password: req.body.password,
         category: req.body.category,
         bio: req.body.bio,
+        bankDetails: req.body.bankDetails,
       }
     }
   )

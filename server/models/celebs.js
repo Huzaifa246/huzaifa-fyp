@@ -13,7 +13,7 @@ const celebritySchema = new mongoose.Schema({
   category: { type: String, required: true },
   bio: { type: String, required: true },
   image: { type: String },
-  bankDetails: { type: String, required: true },
+  bankDetails: { type: String },
   verified: { type: Boolean, default: false },
   meeting: [
     {

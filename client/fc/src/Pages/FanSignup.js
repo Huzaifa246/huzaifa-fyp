@@ -170,7 +170,7 @@ const Signup = () => {
             <input
               type="text"
               placeholder="Full Name"
-              name="fullName"
+              name="name"
               onChange={handleChange}
               value={data.name}
               required

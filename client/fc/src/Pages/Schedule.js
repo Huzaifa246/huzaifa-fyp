@@ -14,7 +14,7 @@ const Meetings = React.memo((props) => {
   const meeting = useSelector((state) => state.meeting);
 
   const handleJoinMeeting = (meeting) => {
-    window.location.href = `https://fanclub.onrender.com/${meeting}`;
+    window.location.href = `https://backend-fanclub.onrender.com/${meeting}`;
   }
   useEffect(() => {
     axios.get(`http://localhost:5000/api/celebs/meeting/${slug}`)
@@ -86,7 +86,7 @@ const CelebMeetings = React.memo(() => {
   }, []);
 
   const handleJoinMeeting = (meeting) => {
-    window.location.href = `https://fanclub.onrender.com/${meeting}`;
+    window.location.href = `https://backend-fanclub.onrender.com/${meeting}`;
   }
   return (
     <>
