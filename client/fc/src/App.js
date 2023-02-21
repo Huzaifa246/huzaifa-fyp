@@ -37,7 +37,6 @@ import CelebSignupcopy from "./Pages/CelebSignupcopy";
 import EmailVerifyCeleb from './Components/EmailVerifyCeleb/index';
 import PasswordResetCeleb from './Components/PasswordResetCeleb';
 
-import Meet from './Components/Meeting/Meet';
 export const UserContext = createContext();
 // const Login = React.lazy(() => import('./views/pages/login/Login'))
 function App() {
@@ -107,8 +106,6 @@ function App() {
               element={<Bloggerscategories />}
             />
             <Route path="/ytcategories" element={<YTcategories />} />
-
-            <Route path="/Meet" element={<Meet />} />
           </Routes>
           <Footer />
         </UserContext.Provider>
