@@ -119,7 +119,7 @@ export default function PaymentForm() {
                 name="email"
                 label="Email"
                 type="email"
-                placeholder="jane.doe@example.com"
+                placeholder="huzaifa@example.com"
                 className="form-control mt-1"
                 required
               />
@@ -130,7 +130,7 @@ export default function PaymentForm() {
                 name="address"
                 label="Address"
                 type="text"
-                placeholder="185 Berry St. Suite 550"
+                placeholder="1 Cantt 550"
                 className="form-control mt-1"
                 required
               />
@@ -152,7 +152,7 @@ export default function PaymentForm() {
                 name="state"
                 label="State"
                 type="text"
-                placeholder="California"
+                placeholder="Pakistan"
                 className="form-control mt-1"
                 required
               />
