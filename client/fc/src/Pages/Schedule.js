@@ -2,11 +2,10 @@ import "./CSS/Schedule.css"
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setMeeting } from "../state/index";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 
 const Meetings = React.memo((props) => {
   const [data, setData] = useState([]);
@@ -26,8 +25,6 @@ const Meetings = React.memo((props) => {
         console.log(error, "Api error")
       });
   }, []);
-
-  // const filteredData = data.filter(users => users)
 
   return (
     <>
@@ -101,7 +98,7 @@ const CelebMeetings = React.memo(() => {
                 <div className="bookedMeeting__title">
                   <strong>Fan : {meeting.fanSlug}</strong>
                 </div>
-                
+
                 <div className="bookedMeeting__time">
                   <strong>Time : {meeting.time}</strong>
                   <strong>Date : {meeting.date}</strong>
@@ -111,7 +108,6 @@ const CelebMeetings = React.memo(() => {
                 </button>
               </div>
             </Col>
-            <ToastContainer />
           </>
         );
       })}
