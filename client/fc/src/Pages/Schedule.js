@@ -110,8 +110,7 @@ const CelebMeetings = React.memo(() => {
             </Col>
           </>
         );
-      })}
-      ;
+      })};
     </>
   );
 });

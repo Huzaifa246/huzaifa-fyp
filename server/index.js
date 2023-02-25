@@ -37,7 +37,6 @@ app.use("/api/celebs", celebRoute);
 app.use("/api/fans", fanRoute);
 // routes
 app.use("/api/users", userRoutes);
-app.use("/api/cusers", cuserRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/celeb-auth", celebAuthRoutes);
 app.use("/api/password-reset", passwordResetRoutes);
@@ -123,10 +122,6 @@ mongoose.connect(
           });
         });
       });
-
-      // server.listen(process.env.PORT||3000)
-
-      //-----------Video--------------------------------
     } // else bracket
   }
 );
